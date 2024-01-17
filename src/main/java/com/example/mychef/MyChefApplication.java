@@ -8,6 +8,8 @@ public class MyChefApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(MyChefApplication.class, args);
+
+        System.out.print("khdsa");
     }
 
 }
