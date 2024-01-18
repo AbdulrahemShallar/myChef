@@ -31,13 +31,13 @@ public class ImageRecipeEntity {
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
-    @OneToMany(mappedBy = "recipe", fetch = FetchType.EAGER,
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private Set<ImageUserHistoryEntity> imageUserHistoryEntitySet;
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
-    @OneToMany(mappedBy = "recipe", fetch = FetchType.EAGER,
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private Set<ImageUserRatingsEntity> imageUserRatingsEntitySet;
 }

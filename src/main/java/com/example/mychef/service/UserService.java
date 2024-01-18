@@ -4,7 +4,6 @@ package com.example.mychef.service;
 import com.example.mychef.convert.UserDTOConverter;
 import com.example.mychef.dto.UserDTO;
 import com.example.mychef.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserDTO getUser(int id){
+    public UserDTO getUserById(int id){
         return userDTOConverter.convertUserEntityToDTO(userRepository.findUserEntityById(id));
     }
 }

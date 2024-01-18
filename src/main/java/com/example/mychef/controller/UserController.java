@@ -3,7 +3,6 @@ package com.example.mychef.controller;
 
 import com.example.mychef.dto.UserDTO;
 import com.example.mychef.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -11,12 +10,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/user")
 public class UserController {
 
-    @Autowired
+    final
     UserService userService;
 
-    @GetMapping(path = "/getuser/{id}")
-    public UserDTO getUser(@PathVariable(value = "id") int id){
-        return userService.getUser(id);
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping(path = "/{id}")
+    public UserDTO getUserById(@PathVariable(value = "id") int id){
+        return userService.getUserById(id);
     }
 
 }

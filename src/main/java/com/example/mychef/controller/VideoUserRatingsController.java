@@ -1,14 +1,17 @@
 package com.example.mychef.controller;
 
 import com.example.mychef.service.VideoUserRatingsService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("")
 public class VideoUserRatingsController {
 
-    @Autowired
+    final
     VideoUserRatingsService videoUserRatingsService;
+
+    public VideoUserRatingsController(VideoUserRatingsService videoUserRatingsService) {
+        this.videoUserRatingsService = videoUserRatingsService;
+    }
 }

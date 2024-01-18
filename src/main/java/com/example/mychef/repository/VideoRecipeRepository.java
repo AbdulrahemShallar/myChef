@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VideoRecipeRepository extends JpaRepository<VideoRecipeEntity,Integer> {
+
+    public VideoRecipeEntity findVideoRecipeEntityById(int id);
 }

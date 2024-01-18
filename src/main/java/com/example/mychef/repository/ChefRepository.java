@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ChefRepository extends JpaRepository<ChefEntity,Integer> {
-
+    public ChefEntity findChefEntityById(int id);
 }
