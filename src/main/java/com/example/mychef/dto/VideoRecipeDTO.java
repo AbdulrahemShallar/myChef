@@ -1,11 +1,12 @@
 package com.example.mychef.dto;
 
 
+import com.example.mychef.model.ChefEntity;
+import com.example.mychef.model.VideoCategoriesEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.Instant;
-import java.util.Set;
 
 @Data
 public class VideoRecipeDTO {
@@ -20,20 +21,7 @@ public class VideoRecipeDTO {
     private int total_rate;
     private Instant data;
     private int likes;
+    private VideoCategoriesEntity category;
+    private ChefEntity chef;
 
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JoinColumn(name = "category_id")
-//    private VideoCategoriesEntity category;
-//
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JoinColumn(name = "chef_id")
-//    private ChefEntity chef;
-//
-//    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY,
-//            cascade = CascadeType.ALL)
-//    private Set<VideoUserHistoryEntity> videoUserHistoryEntitySet;
-//
-//    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY,
-//            cascade = CascadeType.ALL)
-//    private Set<VideoUserRatingsEntity> videoUserRatingsEntitySet;
 }

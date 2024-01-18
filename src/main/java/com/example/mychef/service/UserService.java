@@ -12,13 +12,16 @@ import java.util.List;
 @Service
 public class UserService {
 
-     @Autowired
+     final
      UserDTOConverter userDTOConverter;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    public UserService(UserDTOConverter userDTOConverter, UserRepository userRepository) {
+        this.userDTOConverter = userDTOConverter;
+        this.userRepository = userRepository;
+    }
 
     public UserDTO getUser(int id){
-        return userDTOConverter.convertUsertoUserDTO(userRepository.findUserEntityById(id));
+        return userDTOConverter.convertUserEntityToDTO(userRepository.findUserEntityById(id));
     }
 }

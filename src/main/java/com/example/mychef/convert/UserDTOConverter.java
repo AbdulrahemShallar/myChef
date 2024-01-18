@@ -10,14 +10,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserDTOConverter {
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
-    public  UserDTO convertUsertoUserDTO(UserEntity user){
+    public UserDTOConverter(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
+
+    public  UserDTO convertUserEntityToDTO(UserEntity user){
         return  modelMapper.map(user, UserDTO.class);
     }
 
-    public UserEntity convertUserDTOtoUser(UserDTO userDTO){
+    public UserEntity convertUserDTOToEntity(UserDTO userDTO){
         return  modelMapper.map(userDTO,UserEntity.class);
     }
 }

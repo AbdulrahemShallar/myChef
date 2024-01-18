@@ -7,19 +7,19 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ImageRecipeDTOCOnverter {
+public class ImageRecipeDTOConverter {
 
     private final ModelMapper modelMapper;
 
-    public ImageRecipeDTOCOnverter(ModelMapper modelMapper) {
+    public ImageRecipeDTOConverter(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
 
-    public ImageRecipeDTO convertImageRecipetoImageRecipeDTO(ImageRecipeEntity imageRecipe){
+    public ImageRecipeDTO convertImageRecipeEntityToDTO(ImageRecipeEntity imageRecipe){
         return  modelMapper.map(imageRecipe,ImageRecipeDTO.class);
     }
 
-    public ImageRecipeEntity convertImageRecipeDTOtoImageRecipe(ImageRecipeDTO imageRecipeDTO){
+    public ImageRecipeEntity convertImageRecipeDTOtoEntity(ImageRecipeDTO imageRecipeDTO){
         return  modelMapper.map(imageRecipeDTO,ImageRecipeEntity.class);
     }
 }

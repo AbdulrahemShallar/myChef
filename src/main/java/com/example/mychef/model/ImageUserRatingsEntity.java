@@ -1,15 +1,19 @@
 package com.example.mychef.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 @Entity(name = "image_user_ratings")
-public class ImageUserRatingsEntity {
+@Data
+@IdClass(ImageUserRatingsEntity.class)
+public class ImageUserRatingsEntity implements Serializable {
 
-        @Id
+    @Id
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
@@ -19,15 +23,7 @@ public class ImageUserRatingsEntity {
     @JoinColumn(name = "recipe_id", nullable = false)
     private ImageRecipeEntity recipe;
 
-    @Getter
-    @Setter
     private String comment;
-
-    @Getter
-    @Setter
     private int rate;
-
-    @Getter
-    @Setter
     private Instant dataTime;
 }
