@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ImageUserHistoryRepository extends JpaRepository<ImageUserHistoryEntity, ImageUserHistoryEntity> {
+
 }

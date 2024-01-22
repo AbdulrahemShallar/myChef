@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ImageRecipeRepository extends JpaRepository<ImageRecipeEntity, Integer> {
-    public ImageRecipeEntity findImageRecipeEntityById(int id);
+     ImageRecipeEntity findImageRecipeEntityById(int id);
 }

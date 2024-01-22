@@ -19,6 +19,7 @@ public class UserEntity {
     private String name;
     private String email;
     private String picture;
+    private String password;
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)

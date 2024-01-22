@@ -2,11 +2,12 @@ package com.example.mychef.controller;
 
 
 import com.example.mychef.dto.ImageCategoriesDTO;
+import com.example.mychef.model.ImageCategoriesEntity;
 import com.example.mychef.service.ImageCategoriesService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/imageCategories")
@@ -19,8 +20,24 @@ public class ImageCategoriesController {
         this.imageCategoriesService = imageCategoriesService;
     }
 
+    @RequestMapping(method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ImageCategoriesEntity addCategories(@RequestBody ImageCategoriesEntity imageCategories){
+        return imageCategoriesService.newCategory(imageCategories);
+    }
+
+    @RequestMapping(path = "/{id}",method = RequestMethod.PUT,consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ImageCategoriesEntity updateCategoriesInfo(@RequestBody ImageCategoriesEntity imageCategoriesUpdate,@PathVariable(name = "id") Integer id){
+        return imageCategoriesService.updateCategory(imageCategoriesUpdate,id);
+    }
+
+
     @GetMapping(path = "/{id}")
     public ImageCategoriesDTO getImageCategoryById(@PathVariable(value = "id") int id){
         return imageCategoriesService.getImageCategoryById(id);
+    }
+
+    @GetMapping(path = "/all")
+    public List<ImageCategoriesDTO> getAllCategories(){
+        return imageCategoriesService.getAllCategories();
     }
 }

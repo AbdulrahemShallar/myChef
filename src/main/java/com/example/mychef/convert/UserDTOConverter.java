@@ -4,7 +4,6 @@ package com.example.mychef.convert;
 import com.example.mychef.dto.UserDTO;
 import com.example.mychef.model.UserEntity;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component

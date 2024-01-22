@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ImageCategoriesRepository extends JpaRepository<ImageCategoriesEntity, Integer> {
 
-    public ImageCategoriesEntity findById(int id);
+     ImageCategoriesEntity findImageCategoriesEntityById(int id);
 
 }

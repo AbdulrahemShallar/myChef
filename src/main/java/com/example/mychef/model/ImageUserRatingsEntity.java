@@ -2,8 +2,7 @@ package com.example.mychef.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+
 
 import java.io.Serializable;
 import java.time.Instant;
