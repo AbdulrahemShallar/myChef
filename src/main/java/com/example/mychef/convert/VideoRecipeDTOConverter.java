@@ -1,7 +1,8 @@
 package com.example.mychef.convert;
 
 
-import com.example.mychef.dto.VideoRecipeDTO;
+import com.example.mychef.dto.responseDTO.VideoRecipeResponseDTO;
+import com.example.mychef.dto.requestDTO.VideoRecipeRequestDTO;
 import com.example.mychef.model.VideoRecipeEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -15,12 +16,12 @@ public class VideoRecipeDTOConverter {
         this.modelMapper = modelMapper;
     }
 
-    public VideoRecipeDTO convertVideoRecipeEntityToDTO(VideoRecipeEntity videoRecipeEntity){
-        return  modelMapper.map(videoRecipeEntity, VideoRecipeDTO.class);
+    public VideoRecipeRequestDTO convertVideoRecipeEntityToDTO(VideoRecipeEntity videoRecipeEntity){
+        return  modelMapper.map(videoRecipeEntity, VideoRecipeRequestDTO.class);
     }
 
-    public VideoRecipeEntity convertVideoRecipeDTOToEntity(VideoRecipeDTO videoRecipeDTO){
-        return  modelMapper.map(videoRecipeDTO,VideoRecipeEntity.class);
+    public VideoRecipeEntity convertVideoRecipeDTOToEntity(VideoRecipeResponseDTO videoRecipeResponseDTO){
+        return  modelMapper.map(videoRecipeResponseDTO,VideoRecipeEntity.class);
     }
 
 }

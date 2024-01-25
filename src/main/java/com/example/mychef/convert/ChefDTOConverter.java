@@ -1,6 +1,7 @@
 package com.example.mychef.convert;
 
-import com.example.mychef.dto.ChefDTO;
+import com.example.mychef.dto.requestDTO.ChefRequestDTO;
+import com.example.mychef.dto.responseDTO.ChefResponseDTO;
 import com.example.mychef.model.ChefEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -13,11 +14,11 @@ public class ChefDTOConverter {
         this.modelMapper = modelMapper;
     }
 
-    public ChefDTO convertChefEntityToDTO(ChefEntity chefEntity){
-        return  modelMapper.map(chefEntity, ChefDTO.class);
+    public ChefRequestDTO convertChefEntityToDTO(ChefEntity chefEntity){
+        return  modelMapper.map(chefEntity, ChefRequestDTO.class);
     }
 
-    public ChefEntity convertChefDTOToEntity(ChefDTO chefDTO){
-        return  modelMapper.map(chefDTO,ChefEntity.class);
+    public ChefEntity convertChefDTOToEntity(ChefResponseDTO chefResponseDTO){
+        return  modelMapper.map(chefResponseDTO,ChefEntity.class);
     }
 }

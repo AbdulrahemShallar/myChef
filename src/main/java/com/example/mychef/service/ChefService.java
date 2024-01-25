@@ -1,7 +1,8 @@
 package com.example.mychef.service;
 
 import com.example.mychef.convert.ChefDTOConverter;
-import com.example.mychef.dto.ChefDTO;
+import com.example.mychef.dto.requestDTO.ChefRequestDTO;
+import com.example.mychef.dto.responseDTO.ChefResponseDTO;
 import com.example.mychef.model.ChefEntity;
 import com.example.mychef.repository.ChefRepository;
 import org.springframework.stereotype.Service;
@@ -21,28 +22,36 @@ public class ChefService {
         this.chefRepository = chefRepository;
     }
 
-    public ChefEntity newChef(ChefEntity chefEntity){
-        return chefRepository.save(chefEntity);
+    public ChefEntity newChef(ChefResponseDTO chefResponseDTO){
+        return chefRepository.save(chefDTOConverter.convertChefDTOToEntity(chefResponseDTO));
     }
 
-    public ChefEntity updateChef(ChefEntity chefEntity,Integer id){
+    public ChefEntity updateChef(ChefResponseDTO chefResponseDTO,Integer id){
+
         ChefEntity foundEntity = chefRepository.findChefEntityById(id);
         if(foundEntity != null){
-            foundEntity.setName(chefEntity.getName());
-            foundEntity.setAbout(chefEntity.getAbout());
-            foundEntity.setPicture(chefEntity.getPicture());
-            foundEntity.setChefRate(chefEntity.getChefRate());
-            foundEntity.setChannel_link(chefEntity.getChannel_link());
+            foundEntity.setName(chefResponseDTO.getName());
+            foundEntity.setAbout(chefResponseDTO.getAbout());
+            foundEntity.setPicture(chefResponseDTO.getPicture());
+            foundEntity.setChannel_link(chefResponseDTO.getChannel_link());
             return  chefRepository.save(foundEntity);
         }
         return null;
     }
 
-    public ChefDTO getChefById(int id){
-        return chefDTOConverter.convertChefEntityToDTO(chefRepository.findChefEntityById(id));
+    public ChefRequestDTO getChefById(int id){
+        ChefEntity chefEntity = chefRepository.findChefEntityById(id);
+
+        // Check if the entity exists
+        if (chefEntity == null) {
+            // Handle the case where the entity with the provided id is not found
+            // You might throw an exception or return null based on your requirements
+            return null;
+        }
+        return chefDTOConverter.convertChefEntityToDTO(chefEntity);
     }
 
-    public List<ChefDTO> getAllChef(){
+    public List<ChefRequestDTO> getAllChef(){
         return chefRepository.findAll()
                 .stream()
                 .map(chefDTOConverter::convertChefEntityToDTO)

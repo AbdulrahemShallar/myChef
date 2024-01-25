@@ -1,7 +1,8 @@
 package com.example.mychef.controller;
 
 
-import com.example.mychef.dto.UserDTO;
+import com.example.mychef.dto.requestDTO.UserRequestDTO;
+import com.example.mychef.dto.responseDTO.UserResponseDTO;
 import com.example.mychef.model.UserEntity;
 import com.example.mychef.service.UserService;
 import org.springframework.http.MediaType;
@@ -22,21 +23,21 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public UserEntity addUser(@RequestBody UserEntity user){
+    public UserEntity addUser(@RequestBody UserResponseDTO user){
         return userService.newUser(user);
      }
 
     @RequestMapping(path = "/{id}",method = RequestMethod.PUT,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public UserEntity updateUserInfo(@RequestBody UserEntity userUpdate,@PathVariable(name = "id") Integer id){
+    public UserEntity updateUserInfo(@RequestBody UserResponseDTO userUpdate,@PathVariable(name = "id") Integer id){
         return userService.updateUser(userUpdate,id);
     }
 
     @GetMapping(path = "/{id}")
-    public  UserDTO getUserById(@PathVariable(name = "id") Integer id) {
+    public UserRequestDTO getUserById(@PathVariable(name = "id") Integer id) {
         return userService.getUserById(id);
     }
     @GetMapping(path = "/all")
-    public List<UserDTO> getAllUsers(){
+    public List<UserRequestDTO> getAllUsers(){
         return userService.getAllUser();
     }
 

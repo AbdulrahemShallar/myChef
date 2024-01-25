@@ -1,7 +1,8 @@
 package com.example.mychef.service;
 
 import com.example.mychef.convert.ImageCategoriesDTOConverter;
-import com.example.mychef.dto.ImageCategoriesDTO;
+import com.example.mychef.dto.responseDTO.ImageCategoriesResponseDTO;
+import com.example.mychef.dto.requestDTO.ImageCategoriesRequestDTO;
 import com.example.mychef.model.ImageCategoriesEntity;
 import com.example.mychef.repository.ImageCategoriesRepository;
 import org.springframework.stereotype.Service;
@@ -19,11 +20,11 @@ public class ImageCategoriesService {
         this.imageCategoriesRepository = imageCategoriesRepository;
     }
 
-    public ImageCategoriesEntity newCategory(ImageCategoriesEntity imageCategoriesEntity){
-        return imageCategoriesRepository.save(imageCategoriesEntity);
+    public ImageCategoriesEntity newCategory(ImageCategoriesResponseDTO imageCategoriesResponseDTO){
+        return imageCategoriesRepository.save(imageCategoriesDTOConverter.convertImageCategoriesDTOToDEntity(imageCategoriesResponseDTO));
     }
 
-    public ImageCategoriesEntity updateCategory(ImageCategoriesEntity imageCategories,Integer id){
+    public ImageCategoriesEntity updateCategory(ImageCategoriesResponseDTO imageCategories,Integer id){
         ImageCategoriesEntity foundCategory = imageCategoriesRepository.findImageCategoriesEntityById(id);
         if(foundCategory != null){
             foundCategory.setName(imageCategories.getName());
@@ -33,11 +34,11 @@ public class ImageCategoriesService {
         return null;
     }
 
-    public ImageCategoriesDTO getImageCategoryById(int id){
+    public ImageCategoriesRequestDTO getImageCategoryById(int id){
         return imageCategoriesDTOConverter.convertImageCategoriesEntityToDTO(imageCategoriesRepository.findImageCategoriesEntityById(id));
     }
 
-    public List<ImageCategoriesDTO> getAllCategories(){
+    public List<ImageCategoriesRequestDTO> getAllCategories(){
         return  imageCategoriesRepository.findAll()
                 .stream()
                 .map(imageCategoriesDTOConverter::convertImageCategoriesEntityToDTO)

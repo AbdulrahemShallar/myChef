@@ -1,5 +1,6 @@
 package com.example.mychef.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,11 +14,13 @@ import java.time.Instant;
 public class VideoUserRatingsEntity implements Serializable {
 
     @Id
+    @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
     @Id
+    @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "recipe_id", nullable = false)
     private VideoRecipeEntity recipe;

@@ -1,5 +1,6 @@
 package com.example.mychef.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -22,6 +23,7 @@ public class ChefEntity {
     private String about;
     private String channel_link;
 
+    @JsonBackReference
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     @OneToMany(mappedBy = "chef", fetch = FetchType.LAZY,

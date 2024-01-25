@@ -2,7 +2,8 @@ package com.example.mychef.service;
 
 
 import com.example.mychef.convert.VideoUserRatingsDTOConverter;
-import com.example.mychef.dto.VideoUserRatingsDTO;
+import com.example.mychef.dto.requestDTO.VideoUserRatingsRequestDTO;
+import com.example.mychef.dto.responseDTO.VideoUserRatingsResponseDTO;
 import com.example.mychef.model.VideoUserRatingsEntity;
 import com.example.mychef.repository.VideoUserRatingsRepository;
 import org.springframework.stereotype.Service;
@@ -23,22 +24,47 @@ public class VideoUserRatingsService {
     }
 
 
-    public VideoUserRatingsEntity newUserRatings(VideoUserRatingsEntity videoUserRatings){
-        return videoUserRatingsRepository.save(videoUserRatings);
+    public VideoUserRatingsEntity newUserRatings(VideoUserRatingsResponseDTO videoUserRatings){
+        return videoUserRatingsRepository.save(videoUserRatingsDTOConverter.convertVideoUserRatingsDTOToEntity(videoUserRatings));
     }
 
     // I Should work here by found one element by to Integer Id ???????
-//    public VideoUserRatingsEntity updateUserRatings(VideoUserRatingsEntity videoUserRatings,Integer id){
+//    public VideoUserRatingsEntity updateUserRatings(VideoUserRatingsResponseDTO videoUserRatings,Integer id){
 //        VideoUserRatingsEntity foundEntity = videoUserRatingsRepository.
 //    }
 
 
-    // I Should work here by found one element by to Integer Id ???????
-//    public VideoUserRatingsDTO getUserRatingsById(Integer id){
-//        return videoUserRatingsRepository.find
-//    }
+    public List<VideoUserRatingsRequestDTO> getUserRatingsByUserId(Integer userId){
 
-    public List<VideoUserRatingsDTO> getAllUserUserRatings(){
+        List<VideoUserRatingsEntity> entityList = videoUserRatingsRepository.findByUser(userId);
+        if(entityList != null){
+            return entityList.stream()
+                    .map(videoUserRatingsDTOConverter::convertVideoUserRatingsEntityToDTO)
+                    .collect(Collectors.toList());
+        }
+        return null;
+    }
+    public List<VideoUserRatingsRequestDTO> getUserRatingsByRecipeId(Integer recipeId){
+        List<VideoUserRatingsEntity> entityList = videoUserRatingsRepository.findByRecipe(recipeId);
+        if(entityList != null){
+
+            return entityList.stream()
+                    .map(videoUserRatingsDTOConverter::convertVideoUserRatingsEntityToDTO)
+                    .collect(Collectors.toList());
+        }
+        return null;
+    }
+
+    public VideoUserRatingsRequestDTO getUserRatingsById(Integer userId,Integer recipeId){
+
+        VideoUserRatingsEntity entity = videoUserRatingsRepository.findByUserAndRecipe(userId,recipeId);
+        if(entity != null){
+            return videoUserRatingsDTOConverter.convertVideoUserRatingsEntityToDTO(entity);
+        }
+        return null;
+    }
+
+    public List<VideoUserRatingsRequestDTO> getAllUserUserRatings(){
         return videoUserRatingsRepository.findAll()
                 .stream()
                 .map(videoUserRatingsDTOConverter::convertVideoUserRatingsEntityToDTO)

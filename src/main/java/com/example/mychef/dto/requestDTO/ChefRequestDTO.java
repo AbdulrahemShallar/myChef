@@ -1,18 +1,17 @@
-package com.example.mychef.dto;
+package com.example.mychef.dto.requestDTO;
 
 
 import jakarta.persistence.Column;
 import lombok.Data;
 
-
 @Data
-public class ChefDTO {
+public class ChefRequestDTO {
 
     private int id;
     private String name;
     private String picture;
+    private String about;
     @Column(name = "chef_rate")
     private int chefRate;
-    private String about;
     private String channel_link;
 }

@@ -1,6 +1,7 @@
 package com.example.mychef.controller;
 
-import com.example.mychef.dto.VideoRecipeDTO;
+import com.example.mychef.dto.responseDTO.VideoRecipeResponseDTO;
+import com.example.mychef.dto.requestDTO.VideoRecipeRequestDTO;
 import com.example.mychef.model.VideoRecipeEntity;
 import com.example.mychef.service.VideoRecipeService;
 import org.springframework.http.MediaType;
@@ -20,12 +21,12 @@ public class VideoRecipeController {
     }
 
     @RequestMapping(method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public VideoRecipeEntity addRecipe(@RequestBody VideoRecipeEntity videoRecipe){
+    public VideoRecipeEntity addRecipe(@RequestBody VideoRecipeResponseDTO videoRecipe){
         return videoRecipeService.newRecipe(videoRecipe);
     }
 
     @RequestMapping(path = "/{id}",method = RequestMethod.PUT,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public VideoRecipeEntity updateRecipeInfo(@RequestBody VideoRecipeEntity videoRecipeUpdate,@PathVariable(name = "id") Integer id){
+    public VideoRecipeEntity updateRecipeInfo(@RequestBody VideoRecipeResponseDTO videoRecipeUpdate,@PathVariable(name = "id") Integer id){
         return videoRecipeService.updateRecipe(videoRecipeUpdate,id);
     }
     @RequestMapping(path = "/like")
@@ -35,11 +36,11 @@ public class VideoRecipeController {
 
 
     @GetMapping(path = "/{id}")
-    public VideoRecipeDTO getVideoRecipeById(@PathVariable(value = "id") int id){
+    public VideoRecipeRequestDTO getVideoRecipeById(@PathVariable(value = "id") int id){
         return videoRecipeService.getVideoRecipeById(id);
     }
     @GetMapping(path = "/all")
-    public List<VideoRecipeDTO> getAllRecipe(){
+    public List<VideoRecipeRequestDTO> getAllRecipe(){
         return videoRecipeService.getAllRecipe();
     }
 

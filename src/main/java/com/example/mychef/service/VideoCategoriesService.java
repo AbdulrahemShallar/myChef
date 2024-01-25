@@ -1,7 +1,8 @@
 package com.example.mychef.service;
 
 import com.example.mychef.convert.VideoCategoriesDTOConverter;
-import com.example.mychef.dto.VideoCategoriesDTO;
+import com.example.mychef.dto.requestDTO.VideoCategoriesRequestDTO;
+import com.example.mychef.dto.responseDTO.VideoCategoriesResponseDTO;
 import com.example.mychef.model.VideoCategoriesEntity;
 import com.example.mychef.repository.VideoCategoriesRepository;
 import org.springframework.stereotype.Service;
@@ -22,11 +23,11 @@ public class VideoCategoriesService {
         this.videoCategoriesRepository = videoCategoriesRepository;
     }
 
-    public VideoCategoriesEntity newCategory(VideoCategoriesEntity videoCategoriesEntity){
-        return videoCategoriesRepository.save(videoCategoriesEntity);
+    public VideoCategoriesEntity newCategory(VideoCategoriesResponseDTO categoriesResponseDTO){
+        return videoCategoriesRepository.save(videoCategoriesDTOConverter.convertVideoCategoriesDTOToEntity(categoriesResponseDTO));
     }
 
-    public VideoCategoriesEntity updateCategory(VideoCategoriesEntity videoCategories,Integer id){
+    public VideoCategoriesEntity updateCategory(VideoCategoriesResponseDTO videoCategories,Integer id){
         VideoCategoriesEntity foundCategory = videoCategoriesRepository.findVideoCategoriesEntityById(id);
         if(foundCategory != null){
             foundCategory.setName(videoCategories.getName());
@@ -36,11 +37,11 @@ public class VideoCategoriesService {
         return null;
     }
 
-    public VideoCategoriesDTO getVideoCategoriesById(int id){
+    public VideoCategoriesRequestDTO getVideoCategoriesById(int id){
         return videoCategoriesDTOConverter.convertVideoCategoriesEntityToDTO(videoCategoriesRepository.findVideoCategoriesEntityById(id));
     }
 
-    public List<VideoCategoriesDTO> getAllCategories(){
+    public List<VideoCategoriesRequestDTO> getAllCategories(){
         return  videoCategoriesRepository.findAll()
                 .stream()
                 .map(videoCategoriesDTOConverter::convertVideoCategoriesEntityToDTO)

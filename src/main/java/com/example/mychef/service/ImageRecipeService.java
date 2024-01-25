@@ -2,7 +2,9 @@ package com.example.mychef.service;
 
 
 import com.example.mychef.convert.ImageRecipeDTOConverter;
-import com.example.mychef.dto.ImageRecipeDTO;
+import com.example.mychef.dto.requestDTO.ImageRecipeRequestDTO;
+import com.example.mychef.dto.responseDTO.ImageRecipeResponseDTO;
+import com.example.mychef.model.ImageCategoriesEntity;
 import com.example.mychef.model.ImageRecipeEntity;
 import com.example.mychef.repository.ImageRecipeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -16,34 +18,47 @@ import java.util.stream.Collectors;
 public class ImageRecipeService {
 
     final
-    ImageRecipeDTOConverter imageRecipeDTOCOnverter;
+    ImageRecipeDTOConverter imageRecipeDTOConverter;
 
     private final ImageRecipeRepository imageRecipeRepository;
 
     public ImageRecipeService(ImageRecipeDTOConverter imageRecipeDTOCOnverter, ImageRecipeRepository imageRecipeRepository) {
-        this.imageRecipeDTOCOnverter = imageRecipeDTOCOnverter;
+        this.imageRecipeDTOConverter = imageRecipeDTOCOnverter;
         this.imageRecipeRepository = imageRecipeRepository;
     }
 
-    public ImageRecipeEntity newRecipe(ImageRecipeEntity imageRecipeEntity) {
+    public ImageRecipeEntity newRecipe(ImageRecipeResponseDTO imageRecipeResponseDTO) {
+        ImageRecipeEntity imageRecipeEntity = imageRecipeDTOConverter.convertImageRecipeDTOtoEntity(imageRecipeResponseDTO);
+
+        ImageCategoriesEntity category = new ImageCategoriesEntity();
+        category.setId(imageRecipeResponseDTO.getCategory_id());
+        imageRecipeEntity.setCategory(category);
+
         return imageRecipeRepository.save(imageRecipeEntity);
     }
 
-    public ImageRecipeEntity updateRecipe(ImageRecipeEntity imageRecipeEntity, Integer id) {
+    public ImageRecipeEntity updateRecipe(ImageRecipeResponseDTO imageRecipeResponseDTO, Integer id) {
         ImageRecipeEntity foundRecipe = imageRecipeRepository.findImageRecipeEntityById(id);
+
         if (foundRecipe != null) {
-            foundRecipe.setTitle(imageRecipeEntity.getTitle());
-            foundRecipe.setPicture(imageRecipeEntity.getPicture());
-            foundRecipe.setComponent(imageRecipeEntity.getComponent());
-            foundRecipe.setPreparationMethod(imageRecipeEntity.getPreparationMethod());
-            //****** it should br object inside object ***************
-            foundRecipe.setCategory(imageRecipeEntity.getCategory());
+            foundRecipe.setTitle(imageRecipeResponseDTO.getTitle());
+            foundRecipe.setPicture(imageRecipeResponseDTO.getPicture());
+            foundRecipe.setComponent(imageRecipeResponseDTO.getComponent());
+            foundRecipe.setPreparationMethod(imageRecipeResponseDTO.getPreparationMethod());
+
+            if(imageRecipeResponseDTO.getCategory_id() > 0)
+                foundRecipe.setCategory(getCategory(imageRecipeResponseDTO));
 
             return imageRecipeRepository.save(foundRecipe);
         }
         return null;
     }
 
+    private ImageCategoriesEntity getCategory(ImageRecipeResponseDTO recipeResponseDTO){
+        ImageCategoriesEntity category = new ImageCategoriesEntity();
+        category.setId(recipeResponseDTO.getCategory_id());
+        return  category;
+    }
     public ImageRecipeEntity updateRecipeLikes(Integer id)
     {   ImageRecipeEntity foundRecipe = imageRecipeRepository.findImageRecipeEntityById(id);
         if(foundRecipe != null){
@@ -53,15 +68,23 @@ public class ImageRecipeService {
         return null;
     }
 
-    public ImageRecipeDTO getImageRecipe(int id){
-        return imageRecipeDTOCOnverter.convertImageRecipeEntityToDTO(imageRecipeRepository.findImageRecipeEntityById(id));
+    public ImageRecipeRequestDTO getImageRecipe(int id) {
 
+        ImageRecipeEntity imageRecipeEntity = imageRecipeRepository.findImageRecipeEntityById(id);
+        // Check if the entity exists
+        if (imageRecipeEntity == null) {
+            // Handle the case where the entity with the provided id is not found
+            // You might throw an exception or return null based on your requirements
+            return null;
+        }
+        return imageRecipeDTOConverter.convertImageRecipeEntityToDTO(imageRecipeEntity);
     }
 
-    public List<ImageRecipeDTO> getAllRecipe(){
+
+    public List<ImageRecipeRequestDTO> getAllRecipe(){
         return imageRecipeRepository.findAll()
                 .stream()
-                .map(imageRecipeDTOCOnverter::convertImageRecipeEntityToDTO)
+                .map(imageRecipeDTOConverter::convertImageRecipeEntityToDTO)
                 .collect(Collectors.toList());
     }
 

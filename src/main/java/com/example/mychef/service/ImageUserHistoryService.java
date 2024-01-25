@@ -1,7 +1,7 @@
 package com.example.mychef.service;
 
 import com.example.mychef.convert.ImageUserHistoryDTOConverter;
-import com.example.mychef.dto.ImageUserHistoryDTO;
+import com.example.mychef.dto.requestDTO.ImageUserHistoryRequestDTO;
 import com.example.mychef.model.ImageUserHistoryEntity;
 import com.example.mychef.repository.ImageUserHistoryRepository;
 import org.springframework.stereotype.Service;
@@ -15,26 +15,61 @@ public class ImageUserHistoryService {
     private final ImageUserHistoryDTOConverter imageUserHistoryDTOConverter;
     private final ImageUserHistoryRepository imageUserHistoryRepository;
 
-    public ImageUserHistoryService(ImageUserHistoryDTOConverter imageUserHistoryDTOConverter, ImageUserHistoryRepository imageUserHistoryRepository) {
+
+
+    public ImageUserHistoryService(ImageUserHistoryDTOConverter imageUserHistoryDTOConverter,
+                                   ImageUserHistoryRepository imageUserHistoryRepository) {
         this.imageUserHistoryDTOConverter = imageUserHistoryDTOConverter;
         this.imageUserHistoryRepository = imageUserHistoryRepository;
     }
-    public ImageUserHistoryEntity newUserHistory(ImageUserHistoryEntity imageUserHistory){
-        return imageUserHistoryRepository.save(imageUserHistory);
-    }
+//    public ImageUserHistoryEntity newUserHistory(ImageUserHistoryResponseDTO imageUserHistory){
+//
+//        ImageUserHistoryEntity entity = imageUserHistoryDTOConverter.convertImageUserHistoryDTOToEntity(imageUserHistory);
+//
+//        ImageRecipeEntity recipeDTO = imageRecipeRepository.findImageRecipeEntityById(imageUserHistory.getRecipeID());
+//
+//        UserEntity userDTO = userRepository.findUserEntityById(imageUserHistory.getUserID());
+//
+//
+//        return imageUserHistoryRepository.save(entity);
+//    }
 
-    // I Should work here by found one element by to Integer Id ???????
-//    public ImageUserHistoryEntity updateUserHistory(ImageUserHistoryEntity imageUserHistory,Integer id){
+    // I Should work here by found one element by to Integer ID ???????
+//    public ImageUserHistoryEntity updateUserHistory(ImageUserHistoryResponseDTO imageUserHistory,Integer id){
 //        ImageUserHistoryEntity foundEntity = imageUserHistoryRepository.
 //    }
 
+    public List<ImageUserHistoryRequestDTO> getUserHistoryByUserId(Integer userId){
 
-    // I Should work here by found one element by to Integer Id ???????
-//    public ImageUserHistoryDTO getUserHistoryById(Integer id){
-//        return imageUserHistoryRepository.find
-//    }
+        List<ImageUserHistoryEntity> entityList = imageUserHistoryRepository.findByUser(userId);
+        if(entityList != null){
+            return entityList.stream()
+                    .map(imageUserHistoryDTOConverter::convertImageUserHistoryEntityToDTO)
+                    .collect(Collectors.toList());
+        }
+        return null;
+    }
+    public List<ImageUserHistoryRequestDTO> getUserHistoryByRecipeId(Integer recipeId){
+        List<ImageUserHistoryEntity> entityList = imageUserHistoryRepository.findByRecipe(recipeId);
+        if(entityList != null){
 
-    public List<ImageUserHistoryDTO> getAllUserHistory(){
+            return entityList.stream()
+                    .map(imageUserHistoryDTOConverter::convertImageUserHistoryEntityToDTO)
+                    .collect(Collectors.toList());
+        }
+        return null;
+    }
+
+    public ImageUserHistoryRequestDTO getUserHistoryById(Integer userId,Integer recipeId){
+
+            ImageUserHistoryEntity entity = imageUserHistoryRepository.findByUserAndRecipe(userId,recipeId);
+        if(entity != null){
+            return imageUserHistoryDTOConverter.convertImageUserHistoryEntityToDTO(entity);
+        }
+        return null;
+    }
+
+    public List<ImageUserHistoryRequestDTO> getAllUserHistory(){
         return imageUserHistoryRepository.findAll()
                 .stream()
                 .map(imageUserHistoryDTOConverter::convertImageUserHistoryEntityToDTO)

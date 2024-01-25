@@ -1,11 +1,11 @@
-package com.example.mychef.dto;
+package com.example.mychef.dto.responseDTO;
 
 
 import lombok.Data;
 
 
 @Data
-public class VideoCategoriesDTO {
+public class VideoCategoriesResponseDTO {
     private int id;
     private String name;
     private String picture;

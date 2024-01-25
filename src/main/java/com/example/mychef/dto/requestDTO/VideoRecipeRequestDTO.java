@@ -1,15 +1,14 @@
-package com.example.mychef.dto;
-
+package com.example.mychef.dto.requestDTO;
 
 import com.example.mychef.model.ChefEntity;
 import com.example.mychef.model.VideoCategoriesEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
 import lombok.Data;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
-public class VideoRecipeDTO {
+public class VideoRecipeRequestDTO {
 
     private int id;
     private String title;
@@ -19,9 +18,9 @@ public class VideoRecipeDTO {
     private String preparationMethod;
     @Column(name = "total_rate")
     private int total_rate;
-    private Instant data;
+    private LocalDate date;
     private int likes;
+    private String link;
     private VideoCategoriesEntity category;
     private ChefEntity chef;
-
 }

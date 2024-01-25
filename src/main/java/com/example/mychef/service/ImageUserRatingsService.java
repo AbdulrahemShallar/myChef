@@ -2,7 +2,8 @@ package com.example.mychef.service;
 
 
 import com.example.mychef.convert.ImageUserRatingsDTOConverter;
-import com.example.mychef.dto.ImageUserRatingsDTO;
+import com.example.mychef.dto.requestDTO.ImageUserRatingsRequestDTO;
+import com.example.mychef.dto.responseDTO.ImageUserRatingsResponseDTO;
 import com.example.mychef.model.ImageUserRatingsEntity;
 import com.example.mychef.repository.ImageUserRatingsRepository;
 import org.springframework.stereotype.Service;
@@ -21,22 +22,47 @@ public class ImageUserRatingsService {
         this.imageUserRatingsRepository = imageUserRatingsRepository;
     }
 
-    public ImageUserRatingsEntity newUserRatings(ImageUserRatingsEntity imageUserRatings){
-        return imageUserRatingsRepository.save(imageUserRatings);
+    public ImageUserRatingsEntity newUserRatings(ImageUserRatingsResponseDTO imageUserRatings){
+        return imageUserRatingsRepository.save(imageUserRatingsDTOConverter.convertImageUserRatingsDTOToEntity(imageUserRatings));
     }
 
     // I Should work here by found one element by to Integer Id ???????
-//    public ImageUserRatingsEntity updateUserRatings(ImageUserRatingsEntity imageUserRatings,Integer id){
+//    public ImageUserRatingsEntity updateUserRatings(ImageUserRatingsResponseDTO imageUserRatings,Integer id){
 //        ImageUserRatingsEntity foundEntity = imageUserRatingsRepository.
 //    }
 
+    public List<ImageUserRatingsRequestDTO> getUserRatingsByUserId(Integer userId){
 
-    // I Should work here by found one element by to Integer Id ???????
-//    public ImageUserRatingsDTO getUserRatingsById(Integer id){
-//        return imageUserRatingsRepository.find
-//    }
+        List<ImageUserRatingsEntity> entityList = imageUserRatingsRepository.findByUser(userId);
+        if(entityList != null){
+            return entityList.stream()
+                    .map(imageUserRatingsDTOConverter::convertImageUserRatingsEntityToDTO)
+                    .collect(Collectors.toList());
+        }
+        return null;
+    }
+    public List<ImageUserRatingsRequestDTO> getUserRatingsByRecipeId(Integer recipeId){
+        List<ImageUserRatingsEntity> entityList = imageUserRatingsRepository.findByRecipe(recipeId);
+        if(entityList != null){
 
-    public List<ImageUserRatingsDTO> getAllUserUserRatings(){
+            return entityList.stream()
+                    .map(imageUserRatingsDTOConverter::convertImageUserRatingsEntityToDTO)
+                    .collect(Collectors.toList());
+        }
+        return null;
+    }
+
+    public ImageUserRatingsRequestDTO getUserRatingsById(Integer userId,Integer recipeId){
+
+        ImageUserRatingsEntity entity = imageUserRatingsRepository.findByUserAndRecipe(userId,recipeId);
+        if(entity != null){
+            return imageUserRatingsDTOConverter.convertImageUserRatingsEntityToDTO(entity);
+        }
+        return null;
+    }
+
+
+    public List<ImageUserRatingsRequestDTO> getAllUserUserRatings(){
         return imageUserRatingsRepository.findAll()
                 .stream()
                 .map(imageUserRatingsDTOConverter::convertImageUserRatingsEntityToDTO)

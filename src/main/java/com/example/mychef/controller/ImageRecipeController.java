@@ -1,6 +1,7 @@
 package com.example.mychef.controller;
 
-import com.example.mychef.dto.ImageRecipeDTO;
+import com.example.mychef.dto.requestDTO.ImageRecipeRequestDTO;
+import com.example.mychef.dto.responseDTO.ImageRecipeResponseDTO;
 import com.example.mychef.model.ImageRecipeEntity;
 import com.example.mychef.service.ImageRecipeService;
 import org.springframework.http.MediaType;
@@ -21,12 +22,12 @@ public class ImageRecipeController {
     }
 
     @RequestMapping(method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ImageRecipeEntity addRecipe(@RequestBody ImageRecipeEntity imageRecipe){
-        return imageRecipeService.newRecipe(imageRecipe);
+    public ImageRecipeEntity addRecipe(@RequestBody ImageRecipeResponseDTO recipeDTO){
+        return imageRecipeService.newRecipe(recipeDTO);
     }
 
     @RequestMapping(path = "/{id}",method = RequestMethod.PUT,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ImageRecipeEntity updateRecipeInfo(@RequestBody ImageRecipeEntity imageRecipeUpdate,@PathVariable(name = "id") Integer id){
+    public ImageRecipeEntity updateRecipeInfo(@RequestBody ImageRecipeResponseDTO imageRecipeUpdate, @PathVariable(name = "id") Integer id){
         return imageRecipeService.updateRecipe(imageRecipeUpdate,id);
     }
 
@@ -36,12 +37,12 @@ public class ImageRecipeController {
     }
 
     @GetMapping(path = "/{id}")
-    public ImageRecipeDTO getImageRecipeById(@PathVariable(value = "id") int id){
+    public ImageRecipeRequestDTO getImageRecipeById(@PathVariable(value = "id") int id){
         return imageRecipeService.getImageRecipe(id);
     }
 
     @GetMapping(path = "/all")
-    public List<ImageRecipeDTO> getAllRecipe(){
+    public List<ImageRecipeRequestDTO> getAllRecipe(){
         return imageRecipeService.getAllRecipe();
     }
 }

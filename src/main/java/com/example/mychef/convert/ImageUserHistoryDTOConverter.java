@@ -1,6 +1,7 @@
 package com.example.mychef.convert;
 
-import com.example.mychef.dto.ImageUserHistoryDTO;
+import com.example.mychef.dto.requestDTO.ImageUserHistoryRequestDTO;
+import com.example.mychef.dto.responseDTO.ImageUserHistoryResponseDTO;
 import com.example.mychef.model.ImageUserHistoryEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -13,12 +14,12 @@ public class ImageUserHistoryDTOConverter {
         this.modelMapper = modelMapper;
     }
 
-    public ImageUserHistoryDTO convertImageUserHistoryEntityToDTO(ImageUserHistoryEntity imageUserHistoryEntity){
-        return  modelMapper.map(imageUserHistoryEntity, ImageUserHistoryDTO.class);
+    public ImageUserHistoryRequestDTO convertImageUserHistoryEntityToDTO(ImageUserHistoryEntity imageUserHistoryEntity){
+        return  modelMapper.map(imageUserHistoryEntity, ImageUserHistoryRequestDTO.class);
     }
 
-    public ImageUserHistoryEntity convertImageUserHistoryDTOToEntity(ImageUserHistoryDTO imageUserHistoryDTO){
-        return  modelMapper.map(imageUserHistoryDTO,ImageUserHistoryEntity.class);
+    public ImageUserHistoryEntity convertImageUserHistoryDTOToEntity(ImageUserHistoryResponseDTO imageUserHistoryResponseDTO){
+        return  modelMapper.map(imageUserHistoryResponseDTO,ImageUserHistoryEntity.class);
     }
 
 }

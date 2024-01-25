@@ -1,6 +1,7 @@
 package com.example.mychef.controller;
 
-import com.example.mychef.dto.ImageUserRatingsDTO;
+import com.example.mychef.dto.requestDTO.ImageUserRatingsRequestDTO;
+import com.example.mychef.dto.responseDTO.ImageUserRatingsResponseDTO;
 import com.example.mychef.model.ImageUserRatingsEntity;
 import com.example.mychef.service.ImageUserRatingsService;
 import org.springframework.http.MediaType;
@@ -20,24 +21,32 @@ public class ImageUserRatingsController {
     }
 
     @RequestMapping(method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ImageUserRatingsEntity addUserRating(@RequestBody ImageUserRatingsEntity userRatings){
+    public ImageUserRatingsEntity addUserRating(@RequestBody ImageUserRatingsResponseDTO userRatings){
         return imageUserRatingsService.newUserRatings(userRatings);
     }
 
     // I need to do Service Class first
 
 //    @RequestMapping(path = "/{id}",method = RequestMethod.PUT,consumes = MediaType.APPLICATION_JSON_VALUE)
-//    public ImageUserRatingsEntity updateUserRatingsInfo(@RequestBody ImageUserRatingsEntity userRatingsUpdate,@PathVariable(name = "id") Integer id){
+//    public ImageUserRatingsEntity updateUserRatingsInfo(@RequestBody ImageUserRatingsResponseDTO userRatingsUpdate,@PathVariable(name = "id") Integer id){
 //        return imageUserRatingsService.updateUserHistory(userRatingsUpdate,id);
 //    }
 
-//    @GetMapping(path = "/{id}")
-//    public ImageUserRatingsDTO getUserRatingsById(@PathVariable(name = "id") Integer id) {
-//        return imageUserRatingsService.getUserRatingsById(id);
-//    }
+    @GetMapping(path = "/{userId}/{recipeId}")
+    public ImageUserRatingsRequestDTO getUserRatingsById(@PathVariable(name = "userId") Integer userId, @PathVariable(name = "recipeId") Integer recipeId) {
+        return imageUserRatingsService.getUserRatingsById(userId,recipeId);
+    }
+    @GetMapping(path = "/{userId}")
+    public List<ImageUserRatingsRequestDTO> getUserRatingsByUserId(@PathVariable(name = "userId") Integer userId) {
+        return imageUserRatingsService.getUserRatingsByUserId(userId);
+    }
+    @GetMapping(path = "/{recipeId}")
+    public List<ImageUserRatingsRequestDTO> getUserRatingsByRecipeId(@PathVariable(name = "recipeId") Integer recipeId) {
+        return imageUserRatingsService.getUserRatingsByRecipeId(recipeId);
+    }
 
     @GetMapping(path = "/all")
-    public List<ImageUserRatingsDTO> getAllUserRatings(){
+    public List<ImageUserRatingsRequestDTO> getAllUserRatings(){
         return imageUserRatingsService.getAllUserUserRatings();
     }
 

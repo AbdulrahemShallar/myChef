@@ -1,7 +1,8 @@
 package com.example.mychef.controller;
 
 
-import com.example.mychef.dto.VideoUserHistoryDTO;
+import com.example.mychef.dto.requestDTO.VideoUserHistoryRequestDTO;
+import com.example.mychef.dto.responseDTO.VideoUserHistoryResponseDTO;
 import com.example.mychef.model.VideoUserHistoryEntity;
 import com.example.mychef.service.VideoUserHistoryService;
 import org.springframework.http.MediaType;
@@ -21,24 +22,32 @@ public class VideoUserHistoryController {
     }
 
     @RequestMapping(method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public VideoUserHistoryEntity addUserHistory(@RequestBody VideoUserHistoryEntity userHistory){
+    public VideoUserHistoryEntity addUserHistory(@RequestBody VideoUserHistoryResponseDTO userHistory){
         return videoUserHistoryService.newUserHistory(userHistory);
     }
 
     // I need to do Service Class first
 
 //    @RequestMapping(path = "/{id}",method = RequestMethod.PUT,consumes = MediaType.APPLICATION_JSON_VALUE)
-//    public VideoUserHistoryEntity updateUserHistoryInfo(@RequestBody VideoUserHistoryEntity userHistoryUpdate,@PathVariable(name = "id") Integer id){
+//    public VideoUserHistoryEntity updateUserHistoryInfo(@RequestBody VideoUserHistoryResponseDTO userHistoryUpdate,@PathVariable(name = "id") Integer id){
 //        return videoUserHistoryService.updateUserHistory(userHistoryUpdate,id);
 //    }
 
-//    @GetMapping(path = "/{id}")
-//    public VideoUserHistoryDTO getUserHistoryById(@PathVariable(name = "id") Integer id) {
-//        return videoUserHistoryService.getUserHistoryById(id);
-//    }
+    @GetMapping(path = "/{userId}/{recipeId}")
+    public VideoUserHistoryRequestDTO getUserHistoryById(@PathVariable(name = "userId") Integer userId, @PathVariable(name = "recipeId") Integer recipeId) {
+        return videoUserHistoryService.getUserHistoryById(userId,recipeId);
+    }
+    @GetMapping(path = "/{userId}")
+    public List<VideoUserHistoryRequestDTO> getUserHistoryByUserId(@PathVariable(name = "userId") Integer userId) {
+        return videoUserHistoryService.getUserHistoryByUserId(userId);
+    }
+    @GetMapping(path = "/{recipeId}")
+    public List<VideoUserHistoryRequestDTO> getUserHistoryByRecipeId(@PathVariable(name = "recipeId") Integer recipeId) {
+        return videoUserHistoryService.getUserHistoryByRecipeId(recipeId);
+    }
 
     @GetMapping(path = "/all")
-    public List<VideoUserHistoryDTO> getAllUserHistory(){
-        return videoUserHistoryService.getAlluserUserHistory();
+    public List<VideoUserHistoryRequestDTO> getAllUserHistory(){
+        return videoUserHistoryService.getAllUserHistory();
     }
 }

@@ -1,17 +1,17 @@
-package com.example.mychef.dto;
-
+package com.example.mychef.dto.requestDTO;
 
 import com.example.mychef.model.ImageRecipeEntity;
 import com.example.mychef.model.UserEntity;
 import jakarta.persistence.Column;
 import lombok.Data;
 
-import java.time.Instant;
+import java.util.Date;
 
 @Data
-public class ImageUserHistoryDTO {
+public class ImageUserHistoryRequestDTO {
+
     private UserEntity user;
     private ImageRecipeEntity recipe;
     @Column(name = "date_time")
-    private Instant dataTime;
+    private Date dateTime;
 }

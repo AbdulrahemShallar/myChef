@@ -2,7 +2,8 @@ package com.example.mychef.service;
 
 
 import com.example.mychef.convert.UserDTOConverter;
-import com.example.mychef.dto.UserDTO;
+import com.example.mychef.dto.requestDTO.UserRequestDTO;
+import com.example.mychef.dto.responseDTO.UserResponseDTO;
 import com.example.mychef.model.UserEntity;
 import com.example.mychef.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -22,11 +23,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserEntity newUser(UserEntity user){
-        return userRepository.save(user);
+    public UserEntity newUser(UserResponseDTO user){
+        return userRepository.save(userDTOConverter.convertUserDTOToEntity(user));
     }
 
-    public UserEntity updateUser(UserEntity userUpdate,Integer id){
+    public UserEntity updateUser(UserResponseDTO userUpdate,Integer id){
         UserEntity foundUser = userRepository.findUserEntityById(id);
         if (foundUser != null){
             foundUser.setName(userUpdate.getName());
@@ -38,11 +39,11 @@ public class UserService {
         return null;
     }
 
-    public UserDTO getUserById(int id){
+    public UserRequestDTO getUserById(int id){
         return userDTOConverter.convertUserEntityToDTO(userRepository.findUserEntityById(id));
     }
 
-    public List<UserDTO> getAllUser(){
+    public List<UserRequestDTO> getAllUser(){
         return userRepository.findAll()
                 .stream()
                 .map(userDTOConverter::convertUserEntityToDTO)
