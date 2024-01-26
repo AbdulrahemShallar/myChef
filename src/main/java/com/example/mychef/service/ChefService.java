@@ -33,7 +33,7 @@ public class ChefService {
             foundEntity.setName(chefResponseDTO.getName());
             foundEntity.setAbout(chefResponseDTO.getAbout());
             foundEntity.setPicture(chefResponseDTO.getPicture());
-            foundEntity.setChannel_link(chefResponseDTO.getChannel_link());
+            foundEntity.setChannelLink(chefResponseDTO.getChannelLink());
             return  chefRepository.save(foundEntity);
         }
         return null;
@@ -49,6 +49,73 @@ public class ChefService {
             return null;
         }
         return chefDTOConverter.convertChefEntityToDTO(chefEntity);
+    }
+    public List<ChefRequestDTO> getChefsByName(String name) {
+        return chefRepository.findByName(name)
+                .stream()
+                .map(chefDTOConverter::convertChefEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ChefRequestDTO> getChefWithChannelLink(String link) {
+        return chefRepository.findChefsWithChannelLink(link)
+                .stream()
+                .map(chefDTOConverter::convertChefEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ChefRequestDTO> getChefRateGreaterThan(int rate) {
+        return chefRepository.findByChefRateGreaterThan(rate)
+                .stream()
+                .map(chefDTOConverter::convertChefEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ChefRequestDTO> getChefRateLessThan(int rate) {
+        return chefRepository.findByChefRateLessThan(rate)
+                .stream()
+                .map(chefDTOConverter::convertChefEntityToDTO)
+                .collect(Collectors.toList());
+    }
+    public List<ChefRequestDTO> getChefRateBetween(int minRate,int maxRate) {
+        return chefRepository.findByChefRateBetween(minRate,maxRate)
+                .stream()
+                .map(chefDTOConverter::convertChefEntityToDTO)
+                .collect(Collectors.toList());
+    }
+    public List<ChefRequestDTO> getAboutContaining(String keyword) {
+        return chefRepository.findByAboutContainingIgnoreCase(keyword)
+                .stream()
+                .map(chefDTOConverter::convertChefEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ChefRequestDTO> getChefsByVideoRecipeTitle(String recipeTitle) {
+        return chefRepository.findChefsByVideoRecipeTitle(recipeTitle)
+                .stream()
+                .map(chefDTOConverter::convertChefEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ChefRequestDTO> getOrderByChefRateDesc() {
+        return chefRepository.findByOrderByChefRateDesc()
+                .stream()
+                .map(chefDTOConverter::convertChefEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ChefRequestDTO> getOrderByChefRateAsc() {
+        return chefRepository.findByOrderByChefRateAsc()
+                .stream()
+                .map(chefDTOConverter::convertChefEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ChefRequestDTO> getPicture(String pictureUrl) {
+        return chefRepository.findByPicture(pictureUrl)
+                .stream()
+                .map(chefDTOConverter::convertChefEntityToDTO)
+                .collect(Collectors.toList());
     }
 
     public List<ChefRequestDTO> getAllChef(){

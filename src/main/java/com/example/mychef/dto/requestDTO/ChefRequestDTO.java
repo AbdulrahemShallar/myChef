@@ -13,5 +13,6 @@ public class ChefRequestDTO {
     private String about;
     @Column(name = "chef_rate")
     private int chefRate;
-    private String channel_link;
+    @Column(name = "channel_link")
+    private String channelLink;
 }

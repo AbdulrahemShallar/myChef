@@ -30,8 +30,8 @@ public class ChefController {
         return chefService.updateChef(chefUpdate,id);
     }
 
-    @GetMapping(path = "/{id}")
-    public ChefRequestDTO getChefById(@PathVariable(value = "id") int id){
+    @GetMapping(path = "/id")
+    public ChefRequestDTO getChefById(@RequestParam("id") int id){
         return chefService.getChefById(id);
     }
 
@@ -39,4 +39,58 @@ public class ChefController {
     public List<ChefRequestDTO> getAllChef(){
         return chefService.getAllChef();
     }
+
+
+    @GetMapping("/byName")
+    public List<ChefRequestDTO> getChefsByName(@RequestParam("name") String name) {
+        return chefService.getChefsByName(name);
+    }
+
+    @GetMapping("/withChannelLink")
+    public List<ChefRequestDTO> getChefsWithChannelLink(@RequestParam("link") String link) {
+        return chefService.getChefWithChannelLink(link);
+    }
+
+    @GetMapping("/rateGreaterThan")
+    public List<ChefRequestDTO> getChefsRateGreaterThan(@RequestParam("rate") int rate) {
+        return chefService.getChefRateGreaterThan(rate);
+    }
+
+    @GetMapping("/rateLessThan")
+    public List<ChefRequestDTO> getChefsRateLessThan(@RequestParam("rate") int rate) {
+        return chefService.getChefRateLessThan(rate);
+    }
+
+    @GetMapping("/rateBetween")
+    public List<ChefRequestDTO> getChefsRateBetween(
+            @RequestParam("minRate") int minRate,
+            @RequestParam("maxRate") int maxRate) {
+        return chefService.getChefRateBetween(minRate, maxRate);
+    }
+
+    @GetMapping("/aboutContaining")
+    public List<ChefRequestDTO> getChefsAboutContaining(@RequestParam("keyword") String keyword) {
+        return chefService.getAboutContaining(keyword);
+    }
+
+    @GetMapping("/byVideoRecipeTitle")
+    public List<ChefRequestDTO> getChefsByVideoRecipeTitle(@RequestParam("recipeTitle") String recipeTitle) {
+        return chefService.getChefsByVideoRecipeTitle(recipeTitle);
+    }
+
+    @GetMapping("/orderByRateDesc")
+    public List<ChefRequestDTO> getChefsOrderByRateDesc() {
+        return chefService.getOrderByChefRateDesc();
+    }
+
+    @GetMapping("/orderByRateAsc")
+    public List<ChefRequestDTO> getChefsOrderByRateAsc() {
+        return chefService.getOrderByChefRateAsc();
+    }
+
+    @GetMapping("/byPicture")
+    public List<ChefRequestDTO> getChefsByPicture(@RequestParam("pictureUrl") String pictureUrl) {
+        return chefService.getPicture(pictureUrl);
+    }
+
 }

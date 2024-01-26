@@ -21,7 +21,8 @@ public class ChefEntity {
     @Column(name = "chef_rate")
     private int chefRate;
     private String about;
-    private String channel_link;
+    @Column(name = "channel_link")
+    private String channelLink;
 
     @JsonBackReference
     @Getter(AccessLevel.NONE)

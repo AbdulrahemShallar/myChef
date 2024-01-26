@@ -1,6 +1,7 @@
 package com.example.mychef.dto.responseDTO;
 
 
+import jakarta.persistence.Column;
 import lombok.Data;
 
 
@@ -11,5 +12,6 @@ public class ChefResponseDTO {
     private String name;
     private String picture;
     private String about;
-    private String channel_link;
+    @Column(name = "channel_link")
+    private String channelLink;
 }
