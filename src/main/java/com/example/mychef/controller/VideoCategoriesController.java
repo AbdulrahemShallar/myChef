@@ -20,18 +20,18 @@ public class VideoCategoriesController {
         this.videoCategoriesService = videoCategoriesService;
     }
 
-    @RequestMapping(method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public VideoCategoriesEntity addCategories(@RequestBody VideoCategoriesResponseDTO videoCategories){
         return videoCategoriesService.newCategory(videoCategories);
     }
 
-    @RequestMapping(path = "/{id}",method = RequestMethod.PUT,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public VideoCategoriesEntity updateCategoriesInfo(@RequestBody VideoCategoriesResponseDTO videoCategoriesUpdate,@PathVariable(name = "id") Integer id){
+    @PutMapping(path = "/id",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public VideoCategoriesEntity updateCategoriesInfo(@RequestBody VideoCategoriesResponseDTO videoCategoriesUpdate,@RequestParam("id") Integer id){
         return videoCategoriesService.updateCategory(videoCategoriesUpdate,id);
     }
 
-    @GetMapping(path = "/{id}")
-    public VideoCategoriesRequestDTO getVideoCategoryById(@PathVariable(value = "id") int id){
+    @GetMapping(path = "/id")
+    public VideoCategoriesRequestDTO getVideoCategoryById(@RequestParam("id") int id){
         return videoCategoriesService.getVideoCategoriesById(id);
     }
 
@@ -40,5 +40,54 @@ public class VideoCategoriesController {
         return videoCategoriesService.getAllCategories();
     }
 
+    @GetMapping("/withVideoRecipes")
+    public List<VideoCategoriesRequestDTO> getCategoriesWithVideoRecipes() {
+        return videoCategoriesService.getCategoriesWithVideoRecipes();
+    }
+
+    @GetMapping("/byNameContaining")
+    public List<VideoCategoriesRequestDTO> getCategoriesByNameContaining(@RequestParam("keyword") String keyword) {
+        return videoCategoriesService.getCategoriesByNameContaining(keyword);
+    }
+
+    @GetMapping("/byPicture")
+    public List<VideoCategoriesRequestDTO> getCategoriesByPicture(@RequestParam("pictureUrl") String pictureUrl) {
+        return videoCategoriesService.getCategoriesByPicture(pictureUrl);
+    }
+
+    @GetMapping("/allOrderByNameAsc")
+    public List<VideoCategoriesRequestDTO> getAllCategoriesOrderByNameAsc() {
+        return videoCategoriesService.getAllCategoriesOrderByNameAsc();
+    }
+
+    @GetMapping("/allOrderByNameDesc")
+    public List<VideoCategoriesRequestDTO> getAllCategoriesOrderByNameDesc() {
+        return videoCategoriesService.getAllCategoriesOrderByNameDesc();
+    }
+
+    @GetMapping("/withMostVideoRecipes")
+    public List<VideoCategoriesRequestDTO> getCategoriesWithMostVideoRecipes() {
+        return videoCategoriesService.getCategoriesWithMostVideoRecipes();
+    }
+
+    @GetMapping("/withNoVideoRecipes")
+    public List<VideoCategoriesRequestDTO> getCategoriesWithNoVideoRecipes() {
+        return videoCategoriesService.getCategoriesWithNoVideoRecipes();
+    }
+
+    @GetMapping("/withVideoRecipesAndPicture")
+    public List<VideoCategoriesRequestDTO> getCategoriesWithVideoRecipesAndPicture() {
+        return videoCategoriesService.getCategoriesWithVideoRecipesAndPicture();
+    }
+
+    @GetMapping("/excludingName")
+    public List<VideoCategoriesRequestDTO> getCategoriesByExcludingName(@RequestParam("excludeKeyword") String excludeKeyword) {
+        return videoCategoriesService.getCategoriesByExcludingName(excludeKeyword);
+    }
+
+    @GetMapping("/by-name-containing-order-by-video-recipe-countDesc")
+    public List<VideoCategoriesRequestDTO> getCategoriesByNameContainingOrderByVideoRecipeCountDesc(@RequestParam("keyword") String keyword) {
+        return videoCategoriesService.getCategoriesByNameContainingOrderByVideoRecipeCountDesc(keyword);
+    }
 
 }

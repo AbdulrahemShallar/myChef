@@ -2,8 +2,10 @@ package com.example.mychef.controller;
 
 import com.example.mychef.dto.requestDTO.ImageUserHistoryRequestDTO;
 import com.example.mychef.service.ImageUserHistoryService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -17,28 +19,28 @@ public class ImageUserHistoryController {
         this.imageUserHistoryService = imageUserHistoryService;
     }
 
-//    @RequestMapping(method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
+//    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 //    public ImageUserHistoryEntity addUserHistory(@RequestBody ImageUserHistoryResponseDTO userHistory){
 //        return imageUserHistoryService.newUserHistory(userHistory);
 //    }
 
     // I need to do Service Class first
 
-//    @RequestMapping(path = "/{id}",method = RequestMethod.PUT,consumes = MediaType.APPLICATION_JSON_VALUE)
-//    public ImageUserHistoryEntity updateUserHistoryInfo(@RequestBody ImageUserHistoryResponseDTO userHistoryUpdate,@PathVariable(name = "id") Integer id){
+//    @PutMapping(path = "/id",consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public ImageUserHistoryEntity updateUserHistoryInfo(@RequestBody ImageUserHistoryResponseDTO userHistoryUpdate,@RequestParam("id") Integer id){
 //        return imageUserHistoryService.updateUserHistory(userHistoryUpdate,id);
 //    }
 
-    @GetMapping(path = "/{userId}/{recipeId}")
-    public ImageUserHistoryRequestDTO getUserHistoryById(@PathVariable(name = "userId") Integer userId,@PathVariable(name = "recipeId") Integer recipeId) {
+    @GetMapping(path = "/userAndRecipeId")
+    public ImageUserHistoryRequestDTO getUserHistoryById(@RequestParam("userId") Integer userId,@RequestParam("recipeId") Integer recipeId) {
         return imageUserHistoryService.getUserHistoryById(userId,recipeId);
     }
-    @GetMapping(path = "/{userId}")
-    public List<ImageUserHistoryRequestDTO> getUserHistoryByUserId(@PathVariable(name = "userId") Integer userId) {
+    @GetMapping(path = "/userId")
+    public List<ImageUserHistoryRequestDTO> getUserHistoryByUserId(@RequestParam("userId") Integer userId) {
         return imageUserHistoryService.getUserHistoryByUserId(userId);
     }
-    @GetMapping(path = "/{recipeId}")
-    public List<ImageUserHistoryRequestDTO> getUserHistoryByRecipeId(@PathVariable(name = "recipeId") Integer recipeId) {
+    @GetMapping(path = "/recipeId")
+    public List<ImageUserHistoryRequestDTO> getUserHistoryByRecipeId(@RequestParam("recipeId") Integer recipeId) {
         return imageUserHistoryService.getUserHistoryByRecipeId(recipeId);
     }
 
@@ -47,5 +49,53 @@ public class ImageUserHistoryController {
         return imageUserHistoryService.getAllUserHistory();
     }
 
+    @GetMapping("/user/date-range")
+    public List<ImageUserHistoryRequestDTO> getUserHistoryByUserAndDateRange(
+            @RequestParam(name = "userId") Integer userId,
+            @RequestParam(name = "startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+            @RequestParam(name = "endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
+        return imageUserHistoryService.getUserHistoryByUserAndDateRange(userId, startDate, endDate);
+    }
+
+    @GetMapping("/recipe/date-range")
+    public List<ImageUserHistoryRequestDTO> getHistoryByRecipeAndDateRange(
+            @RequestParam(name = "recipeId") Integer recipeId,
+            @RequestParam(name = "startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+            @RequestParam(name = "endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
+        return imageUserHistoryService.getHistoryByRecipeAndDateRange(recipeId, startDate, endDate);
+    }
+
+    @GetMapping("/date-range")
+    public List<ImageUserHistoryRequestDTO> getHistoryByDateRange(
+            @RequestParam(name = "startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+            @RequestParam(name = "endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
+        return imageUserHistoryService.getHistoryByDateRange(startDate, endDate);
+    }
+
+    @GetMapping("/latest-records")
+    public List<ImageUserHistoryRequestDTO> getLatestRecords(
+            @RequestParam(name = "limit") int limit) {
+        return imageUserHistoryService.getLatestRecords(limit);
+    }
+
+    @GetMapping("/latest-history")
+    public ImageUserHistoryRequestDTO getLatestHistoryForUserAndRecipe(
+            @RequestParam(name = "userId") Integer userId,
+            @RequestParam(name = "recipeId") Integer recipeId) {
+        return imageUserHistoryService.getLatestHistoryForUserAndRecipe(userId, recipeId);
+    }
+
+    @GetMapping("/latest-history-records")
+    public List<ImageUserHistoryRequestDTO> getLatestHistoryRecords(
+            @RequestParam(name = "limit") int limit) {
+        return imageUserHistoryService.getLatestHistoryRecords(limit);
+    }
+
+    @GetMapping("/latest-history-for-user")
+    public List<ImageUserHistoryRequestDTO> getLatestHistoryForUser(
+            @RequestParam(name = "userId") Integer userId,
+            @RequestParam(name = "limit") int limit) {
+        return imageUserHistoryService.getLatestHistoryForUser(userId, limit);
+    }
 
 }

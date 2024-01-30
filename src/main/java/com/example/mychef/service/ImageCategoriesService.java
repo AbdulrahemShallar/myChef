@@ -44,4 +44,75 @@ public class ImageCategoriesService {
                 .map(imageCategoriesDTOConverter::convertImageCategoriesEntityToDTO)
                 .collect(Collectors.toList());
     }
+
+    public List<ImageCategoriesRequestDTO> getCategoriesWithImageRecipes() {
+        return imageCategoriesRepository.findCategoriesWithImageRecipes()
+                .stream()
+                .map(imageCategoriesDTOConverter::convertImageCategoriesEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageCategoriesRequestDTO> getCategoriesByNameContaining(String keyword) {
+        return imageCategoriesRepository.findByNameContaining(keyword)
+                .stream()
+                .map(imageCategoriesDTOConverter::convertImageCategoriesEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageCategoriesRequestDTO> getCategoriesByPicture(String pictureUrl) {
+        return imageCategoriesRepository.findByPicture(pictureUrl)
+                .stream()
+                .map(imageCategoriesDTOConverter::convertImageCategoriesEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageCategoriesRequestDTO> getAllCategoriesOrderByNameAsc() {
+        return imageCategoriesRepository.findAllByOrderByNameAsc()
+                .stream()
+                .map(imageCategoriesDTOConverter::convertImageCategoriesEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageCategoriesRequestDTO> getAllCategoriesOrderByNameDesc() {
+        return imageCategoriesRepository.findAllByOrderByNameDesc()
+                .stream()
+                .map(imageCategoriesDTOConverter::convertImageCategoriesEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageCategoriesRequestDTO> getCategoriesWithMostImageRecipes() {
+        return imageCategoriesRepository.findCategoriesWithMostImageRecipes()
+                .stream()
+                .map(imageCategoriesDTOConverter::convertImageCategoriesEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageCategoriesRequestDTO> getCategoriesWithNoImageRecipes() {
+        return imageCategoriesRepository.findCategoriesWithNoImageRecipes()
+                .stream()
+                .map(imageCategoriesDTOConverter::convertImageCategoriesEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageCategoriesRequestDTO> getCategoriesWithImageRecipesAndPicture() {
+        return imageCategoriesRepository.findCategoriesWithImageRecipesAndPicture()
+                .stream()
+                .map(imageCategoriesDTOConverter::convertImageCategoriesEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageCategoriesRequestDTO> getCategoriesByExcludingName(String excludeKeyword) {
+        return imageCategoriesRepository.findByExcludingName(excludeKeyword)
+                .stream()
+                .map(imageCategoriesDTOConverter::convertImageCategoriesEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageCategoriesRequestDTO> getCategoriesByNameContainingOrderByImageRecipeCountDesc(String keyword) {
+        return imageCategoriesRepository.findByNameContainingOrderByImageRecipeCountDesc(keyword)
+                .stream()
+                .map(imageCategoriesDTOConverter::convertImageCategoriesEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
 }

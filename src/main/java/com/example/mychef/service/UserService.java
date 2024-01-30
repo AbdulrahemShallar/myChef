@@ -50,4 +50,92 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    public UserRequestDTO getUserByEmail(String email) {
+        return userDTOConverter.convertUserEntityToDTO(userRepository.findUserEntityByEmail(email));
+    }
+
+    public List<UserRequestDTO> getUsersByNameContaining(String keyword) {
+        return userRepository.findUsersByNameContaining(keyword)
+                .stream()
+                .map(userDTOConverter::convertUserEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserRequestDTO> getUsersByEmailContaining(String keyword) {
+        return userRepository.findUsersByEmailContaining(keyword)
+                .stream()
+                .map(userDTOConverter::convertUserEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserRequestDTO> getUsersByPicture(String pictureUrl) {
+        return userRepository.findUsersByPicture(pictureUrl)
+                .stream()
+                .map(userDTOConverter::convertUserEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserRequestDTO> getUsersByEmailAndPassword(String email, String password) {
+        return userRepository.findUsersByEmailAndPassword(email, password)
+                .stream()
+                .map(userDTOConverter::convertUserEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserRequestDTO> getUsersWithImageHistory() {
+        return userRepository.findUsersWithImageHistory()
+                .stream()
+                .map(userDTOConverter::convertUserEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserRequestDTO> getUsersWithImageRatings() {
+        return userRepository.findUsersWithImageRatings()
+                .stream()
+                .map(userDTOConverter::convertUserEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserRequestDTO> getUsersWithVideoHistory() {
+        return userRepository.findUsersWithVideoHistory()
+                .stream()
+                .map(userDTOConverter::convertUserEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserRequestDTO> getUsersWithVideoRatings() {
+        return userRepository.findUsersWithVideoRatings()
+                .stream()
+                .map(userDTOConverter::convertUserEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserRequestDTO> getUsersWithImageHistoryGreaterThan(int minHistorySize) {
+        return userRepository.findUsersWithImageHistoryGreaterThan(minHistorySize)
+                .stream()
+                .map(userDTOConverter::convertUserEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserRequestDTO> getUsersWithImageRatingsGreaterThan(int minRatingsSize) {
+        return userRepository.findUsersWithImageRatingsGreaterThan(minRatingsSize)
+                .stream()
+                .map(userDTOConverter::convertUserEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserRequestDTO> getUsersWithVideoHistoryGreaterThan(int minHistorySize) {
+        return userRepository.findUsersWithVideoHistoryGreaterThan(minHistorySize)
+                .stream()
+                .map(userDTOConverter::convertUserEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserRequestDTO> getUsersWithVideoRatingsGreaterThan(int minRatingsSize) {
+        return userRepository.findUsersWithVideoRatingsGreaterThan(minRatingsSize)
+                .stream()
+                .map(userDTOConverter::convertUserEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
 }

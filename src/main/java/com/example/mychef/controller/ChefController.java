@@ -20,13 +20,13 @@ public class ChefController {
         this.chefService = chefService;
     }
 
-    @RequestMapping(method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ChefEntity addChef(@RequestBody ChefResponseDTO chef){
         return chefService.newChef(chef);
     }
 
-    @RequestMapping(path = "/{id}",method = RequestMethod.PUT,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ChefEntity updateChefInfo(@RequestBody ChefResponseDTO chefUpdate,@PathVariable(name = "id") Integer id){
+    @PutMapping(path = "/id",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ChefEntity updateChefInfo(@RequestBody ChefResponseDTO chefUpdate,@RequestParam("id") Integer id){
         return chefService.updateChef(chefUpdate,id);
     }
 

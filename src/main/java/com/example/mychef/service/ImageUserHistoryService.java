@@ -6,6 +6,7 @@ import com.example.mychef.model.ImageUserHistoryEntity;
 import com.example.mychef.repository.ImageUserHistoryRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,6 +72,57 @@ public class ImageUserHistoryService {
 
     public List<ImageUserHistoryRequestDTO> getAllUserHistory(){
         return imageUserHistoryRepository.findAll()
+                .stream()
+                .map(imageUserHistoryDTOConverter::convertImageUserHistoryEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+
+    public List<ImageUserHistoryRequestDTO> getUserHistoryByUserAndDateRange(Integer userId, Date startDate, Date endDate) {
+        return imageUserHistoryRepository.findByUserAndDateRange(userId, startDate, endDate)
+                .stream()
+                .map(imageUserHistoryDTOConverter::convertImageUserHistoryEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageUserHistoryRequestDTO> getHistoryByRecipeAndDateRange(Integer recipeId, Date startDate, Date endDate) {
+        return imageUserHistoryRepository.findByRecipeAndDateRange(recipeId, startDate, endDate)
+                .stream()
+                .map(imageUserHistoryDTOConverter::convertImageUserHistoryEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageUserHistoryRequestDTO> getHistoryByDateRange(Date startDate, Date endDate) {
+        return imageUserHistoryRepository.findByDateRange(startDate, endDate)
+                .stream()
+                .map(imageUserHistoryDTOConverter::convertImageUserHistoryEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageUserHistoryRequestDTO> getLatestRecords(int limit) {
+        return imageUserHistoryRepository.findLatestRecords(limit)
+                .stream()
+                .map(imageUserHistoryDTOConverter::convertImageUserHistoryEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public ImageUserHistoryRequestDTO getLatestHistoryForUserAndRecipe(Integer userId, Integer recipeId) {
+        ImageUserHistoryEntity entity = imageUserHistoryRepository.findLatestHistoryForUserAndRecipe(userId, recipeId);
+        if (entity != null) {
+            return imageUserHistoryDTOConverter.convertImageUserHistoryEntityToDTO(entity);
+        }
+        return null;
+    }
+
+    public List<ImageUserHistoryRequestDTO> getLatestHistoryRecords(int limit){
+        return imageUserHistoryRepository.findLatestHistoryRecords(limit)
+                .stream()
+                .map(imageUserHistoryDTOConverter::convertImageUserHistoryEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageUserHistoryRequestDTO> getLatestHistoryForUser(Integer userId, int limit) {
+        return imageUserHistoryRepository.findLatestHistoryForUser(userId, limit)
                 .stream()
                 .map(imageUserHistoryDTOConverter::convertImageUserHistoryEntityToDTO)
                 .collect(Collectors.toList());

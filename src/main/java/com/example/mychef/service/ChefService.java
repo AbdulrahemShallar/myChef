@@ -51,7 +51,7 @@ public class ChefService {
         return chefDTOConverter.convertChefEntityToDTO(chefEntity);
     }
     public List<ChefRequestDTO> getChefsByName(String name) {
-        return chefRepository.findByName(name)
+        return chefRepository.findByName(name.toUpperCase())
                 .stream()
                 .map(chefDTOConverter::convertChefEntityToDTO)
                 .collect(Collectors.toList());

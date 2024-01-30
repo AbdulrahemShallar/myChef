@@ -10,6 +10,7 @@ import com.example.mychef.repository.ImageRecipeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,11 +55,6 @@ public class ImageRecipeService {
         return null;
     }
 
-    private ImageCategoriesEntity getCategory(ImageRecipeResponseDTO recipeResponseDTO){
-        ImageCategoriesEntity category = new ImageCategoriesEntity();
-        category.setId(recipeResponseDTO.getCategory_id());
-        return  category;
-    }
     public ImageRecipeEntity updateRecipeLikes(Integer id)
     {   ImageRecipeEntity foundRecipe = imageRecipeRepository.findImageRecipeEntityById(id);
         if(foundRecipe != null){
@@ -67,6 +63,13 @@ public class ImageRecipeService {
         }
         return null;
     }
+
+    private ImageCategoriesEntity getCategory(ImageRecipeResponseDTO recipeResponseDTO){
+        ImageCategoriesEntity category = new ImageCategoriesEntity();
+        category.setId(recipeResponseDTO.getCategory_id());
+        return  category;
+    }
+
 
     public ImageRecipeRequestDTO getImageRecipe(int id) {
 
@@ -83,6 +86,118 @@ public class ImageRecipeService {
 
     public List<ImageRecipeRequestDTO> getAllRecipe(){
         return imageRecipeRepository.findAll()
+                .stream()
+                .map(imageRecipeDTOConverter::convertImageRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageRecipeRequestDTO> getRecipesWithTitleContaining(String keyword) {
+        return imageRecipeRepository.findByTitleContaining(keyword)
+                .stream()
+                .map(imageRecipeDTOConverter::convertImageRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageRecipeRequestDTO> getRecipesByCategory(ImageCategoriesEntity category) {
+        return imageRecipeRepository.findByCategory(category)
+                .stream()
+                .map(imageRecipeDTOConverter::convertImageRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageRecipeRequestDTO> getRecipesByTotalRateGreaterThan(int rate) {
+        return imageRecipeRepository.findByTotalRateGreaterThan(rate)
+                .stream()
+                .map(imageRecipeDTOConverter::convertImageRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageRecipeRequestDTO> getRecipesByLikesGreaterThan(int likes) {
+        return imageRecipeRepository.findByLikesGreaterThan(likes)
+                .stream()
+                .map(imageRecipeDTOConverter::convertImageRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageRecipeRequestDTO> getRecipesByDateAfter(LocalDate date) {
+        return imageRecipeRepository.findByDateAfter(date)
+                .stream()
+                .map(imageRecipeDTOConverter::convertImageRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageRecipeRequestDTO> getRecipesOrderByTotalRateDesc() {
+        return imageRecipeRepository.findByOrderByTotalRateDesc()
+                .stream()
+                .map(imageRecipeDTOConverter::convertImageRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageRecipeRequestDTO> getMostLikedRecipe() {
+        return imageRecipeRepository.findMostLikedRecipe()
+                .stream()
+                .map(imageRecipeDTOConverter::convertImageRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageRecipeRequestDTO> getRecipesByMinRatings(int minRatings) {
+        return imageRecipeRepository.findByMinRatings(minRatings)
+                .stream()
+                .map(imageRecipeDTOConverter::convertImageRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageRecipeRequestDTO> getRecipesByTotalRateBetween(int minRate, int maxRate) {
+        return imageRecipeRepository.findByTotalRateBetween(minRate, maxRate)
+                .stream()
+                .map(imageRecipeDTOConverter::convertImageRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageRecipeRequestDTO> getRecipesByDateBetween(LocalDate startDate, LocalDate endDate) {
+        return imageRecipeRepository.findByDateBetween(startDate, endDate)
+                .stream()
+                .map(imageRecipeDTOConverter::convertImageRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageRecipeRequestDTO> getLeastLikedRecipe() {
+        return imageRecipeRepository.findLeastLikedRecipe()
+                .stream()
+                .map(imageRecipeDTOConverter::convertImageRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageRecipeRequestDTO> getRecipesWithTitleContainingIgnoreCase(String keyword) {
+        return imageRecipeRepository.findByTitleContainingIgnoreCase(keyword)
+                .stream()
+                .map(imageRecipeDTOConverter::convertImageRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageRecipeRequestDTO> getTopRatedRecipe() {
+        return imageRecipeRepository.findTopRatedRecipe()
+                .stream()
+                .map(imageRecipeDTOConverter::convertImageRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageRecipeRequestDTO> getRecipesCreatedToday() {
+        return imageRecipeRepository.findRecipesCreatedToday()
+                .stream()
+                .map(imageRecipeDTOConverter::convertImageRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageRecipeRequestDTO> getRecipesWithNoLikes() {
+        return imageRecipeRepository.findRecipesWithNoLikes()
+                .stream()
+                .map(imageRecipeDTOConverter::convertImageRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageRecipeRequestDTO> getLatestRecipe() {
+        return imageRecipeRepository.findLatestRecipe()
                 .stream()
                 .map(imageRecipeDTOConverter::convertImageRecipeEntityToDTO)
                 .collect(Collectors.toList());

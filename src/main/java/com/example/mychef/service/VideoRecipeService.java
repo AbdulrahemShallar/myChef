@@ -2,12 +2,13 @@ package com.example.mychef.service;
 
 
 import com.example.mychef.convert.VideoRecipeDTOConverter;
-import com.example.mychef.dto.responseDTO.VideoRecipeResponseDTO;
 import com.example.mychef.dto.requestDTO.VideoRecipeRequestDTO;
+import com.example.mychef.dto.responseDTO.VideoRecipeResponseDTO;
 import com.example.mychef.model.*;
 import com.example.mychef.repository.VideoRecipeRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -90,6 +91,175 @@ public class VideoRecipeService {
             return null;
         }
         return videoRecipeDTOConverter.convertVideoRecipeEntityToDTO(videoRecipeEntity);
+    }
+    public List<VideoRecipeRequestDTO> getRecipesWithTitleContaining(String keyword) {
+        return videoRecipeRepository.findByTitleContaining(keyword)
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoRecipeRequestDTO> getRecipesByCategory(VideoCategoriesEntity category) {
+        return videoRecipeRepository.findByCategory(category)
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoRecipeRequestDTO> getRecipesByTotalRateGreaterThan(int rate) {
+        return videoRecipeRepository.findByTotalRateGreaterThan(rate)
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoRecipeRequestDTO> getRecipesByLikesGreaterThan(int likes) {
+        return videoRecipeRepository.findByLikesGreaterThan(likes)
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoRecipeRequestDTO> getRecipesByDateAfter(LocalDate date) {
+        return videoRecipeRepository.findByDateAfter(date)
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoRecipeRequestDTO> getRecipesOrderByTotalRateDesc() {
+        return videoRecipeRepository.findByOrderByTotalRateDesc()
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoRecipeRequestDTO> getMostLikedRecipe() {
+        return videoRecipeRepository.findMostLikedRecipe()
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoRecipeRequestDTO> getRecipesByMinRatings(int minRatings) {
+        return videoRecipeRepository.findByMinRatings(minRatings)
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoRecipeRequestDTO> getRecipesByTotalRateBetween(int minRate, int maxRate) {
+        return videoRecipeRepository.findByTotalRateBetween(minRate, maxRate)
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoRecipeRequestDTO> getRecipesByDateBetween(LocalDate startDate, LocalDate endDate) {
+        return videoRecipeRepository.findByDateBetween(startDate, endDate)
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoRecipeRequestDTO> getLeastLikedRecipe() {
+        return videoRecipeRepository.findLeastLikedRecipe()
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoRecipeRequestDTO> getRecipesWithTitleContainingIgnoreCase(String keyword) {
+        return videoRecipeRepository.findByTitleContainingIgnoreCase(keyword)
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoRecipeRequestDTO> getTopRatedRecipe() {
+        return videoRecipeRepository.findTopRatedRecipe()
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoRecipeRequestDTO> getRecipesCreatedToday() {
+        return videoRecipeRepository.findRecipesCreatedToday()
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoRecipeRequestDTO> getRecipesWithNoLikes() {
+        return videoRecipeRepository.findRecipesWithNoLikes()
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoRecipeRequestDTO> getLatestRecipe() {
+        return videoRecipeRepository.findLatestRecipe()
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+    ///********************************************
+
+    public List<VideoRecipeRequestDTO> getRecipesByChef(ChefEntity chef) {
+        return videoRecipeRepository.findByChef(chef)
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoRecipeRequestDTO> getRecipesByLink(String link) {
+        return videoRecipeRepository.findByLink(link)
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoRecipeRequestDTO> getRecipesByCategoryAndTotalRateBetween(
+            VideoCategoriesEntity category, int minRate, int maxRate) {
+        return videoRecipeRepository.findByCategoryAndTotalRateBetween(category, minRate, maxRate)
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoRecipeRequestDTO> getLatestRecipeByChef() {
+        return videoRecipeRepository.findLatestRecipeByChef()
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoRecipeRequestDTO> getOldestRecipeByChef() {
+        return videoRecipeRepository.findOldestRecipeByChef()
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoRecipeRequestDTO> getLowestRatedRecipe() {
+        return videoRecipeRepository.findLowestRatedRecipe()
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoRecipeRequestDTO> getHighestRatedRecipe() {
+        return videoRecipeRepository.findHighestRatedRecipe()
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoRecipeRequestDTO> getUnratedRecipes() {
+        return videoRecipeRepository.findUnratedRecipes()
+                .stream()
+                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
+                .collect(Collectors.toList());
     }
 
     //******* I still need for total rate update i think i should get average for userRating Service

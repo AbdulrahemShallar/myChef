@@ -8,6 +8,7 @@ import com.example.mychef.model.VideoUserRatingsEntity;
 import com.example.mychef.repository.VideoUserRatingsRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,6 +67,68 @@ public class VideoUserRatingsService {
 
     public List<VideoUserRatingsRequestDTO> getAllUserUserRatings(){
         return videoUserRatingsRepository.findAll()
+                .stream()
+                .map(videoUserRatingsDTOConverter::convertVideoUserRatingsEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoUserRatingsRequestDTO> getUserRatingsByRate(int rate) {
+        return videoUserRatingsRepository.findByRate(rate)
+                .stream()
+                .map(videoUserRatingsDTOConverter::convertVideoUserRatingsEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoUserRatingsRequestDTO> getUserRatingsByRateBetween(int minRate, int maxRate) {
+        return videoUserRatingsRepository.findByRateBetween(minRate, maxRate)
+                .stream()
+                .map(videoUserRatingsDTOConverter::convertVideoUserRatingsEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoUserRatingsRequestDTO> getUserRatingsByDateRange(Instant startDate, Instant endDate) {
+        return videoUserRatingsRepository.findByDateRange(startDate, endDate)
+                .stream()
+                .map(videoUserRatingsDTOConverter::convertVideoUserRatingsEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoUserRatingsRequestDTO> getRatingsWithComments() {
+        return videoUserRatingsRepository.findRatingsWithComments()
+                .stream()
+                .map(videoUserRatingsDTOConverter::convertVideoUserRatingsEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoUserRatingsRequestDTO> getRatingsWithoutComments() {
+        return videoUserRatingsRepository.findRatingsWithoutComments()
+                .stream()
+                .map(videoUserRatingsDTOConverter::convertVideoUserRatingsEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoUserRatingsRequestDTO> getUserRatingsByUserAndRate(int userId, int rate) {
+        return videoUserRatingsRepository.findByUserAndRate(userId, rate)
+                .stream()
+                .map(videoUserRatingsDTOConverter::convertVideoUserRatingsEntityToDTO)
+                .collect(Collectors.toList());
+    }
+    public List<VideoUserRatingsRequestDTO> getUserRatingsByRecipeAndRate(int recipeId, int rate) {
+        return videoUserRatingsRepository.findByRecipeAndRate(recipeId, rate)
+                .stream()
+                .map(videoUserRatingsDTOConverter::convertVideoUserRatingsEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoUserRatingsRequestDTO> getMaxRatedRatings() {
+        return videoUserRatingsRepository.findMaxRatedRatings()
+                .stream()
+                .map(videoUserRatingsDTOConverter::convertVideoUserRatingsEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoUserRatingsRequestDTO> getMinRatedRatings() {
+        return videoUserRatingsRepository.findMinRatedRatings()
                 .stream()
                 .map(videoUserRatingsDTOConverter::convertVideoUserRatingsEntityToDTO)
                 .collect(Collectors.toList());

@@ -12,7 +12,7 @@ import java.util.List;
 public interface ChefRepository extends JpaRepository<ChefEntity,Integer> {
      ChefEntity findChefEntityById(int id);
 
-     @Query(value = "SELECT c FROM chef c WHERE UPPER(c.name) Like %upper(?1)%")
+     @Query(value = "SELECT c FROM chef c WHERE UPPER(c.name) Like %?1%")
      List<ChefEntity> findByName(String name);
 
      @Query(value = "SELECT c FROM chef c WHERE c.channelLink IS NOT NULL And c.channelLink like %?1%")
@@ -39,5 +39,6 @@ public interface ChefRepository extends JpaRepository<ChefEntity,Integer> {
 
      // Custom query to find chefs with a specific picture URL
      List<ChefEntity> findByPicture(String pictureUrl);
+
 
 }

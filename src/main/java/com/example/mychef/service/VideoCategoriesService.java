@@ -48,4 +48,74 @@ public class VideoCategoriesService {
                 .collect(Collectors.toList());
     }
 
+    public List<VideoCategoriesRequestDTO> getCategoriesWithVideoRecipes() {
+        return videoCategoriesRepository.findCategoriesWithVideoRecipes()
+                .stream()
+                .map(videoCategoriesDTOConverter::convertVideoCategoriesEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoCategoriesRequestDTO> getCategoriesByNameContaining(String keyword) {
+        return videoCategoriesRepository.findByNameContaining(keyword)
+                .stream()
+                .map(videoCategoriesDTOConverter::convertVideoCategoriesEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoCategoriesRequestDTO> getCategoriesByPicture(String pictureUrl) {
+        return videoCategoriesRepository.findByPicture(pictureUrl)
+                .stream()
+                .map(videoCategoriesDTOConverter::convertVideoCategoriesEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoCategoriesRequestDTO> getAllCategoriesOrderByNameAsc() {
+        return videoCategoriesRepository.findAllByOrderByNameAsc()
+                .stream()
+                .map(videoCategoriesDTOConverter::convertVideoCategoriesEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoCategoriesRequestDTO> getAllCategoriesOrderByNameDesc() {
+        return videoCategoriesRepository.findAllByOrderByNameDesc()
+                .stream()
+                .map(videoCategoriesDTOConverter::convertVideoCategoriesEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoCategoriesRequestDTO> getCategoriesWithMostVideoRecipes() {
+        return videoCategoriesRepository.findCategoriesWithMostVideoRecipes()
+                .stream()
+                .map(videoCategoriesDTOConverter::convertVideoCategoriesEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoCategoriesRequestDTO> getCategoriesWithNoVideoRecipes() {
+        return videoCategoriesRepository.findCategoriesWithNoVideoRecipes()
+                .stream()
+                .map(videoCategoriesDTOConverter::convertVideoCategoriesEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoCategoriesRequestDTO> getCategoriesWithVideoRecipesAndPicture() {
+        return videoCategoriesRepository.findCategoriesWithVideoRecipesAndPicture()
+                .stream()
+                .map(videoCategoriesDTOConverter::convertVideoCategoriesEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoCategoriesRequestDTO> getCategoriesByExcludingName(String excludeKeyword) {
+        return videoCategoriesRepository.findByExcludingName(excludeKeyword)
+                .stream()
+                .map(videoCategoriesDTOConverter::convertVideoCategoriesEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoCategoriesRequestDTO> getCategoriesByNameContainingOrderByVideoRecipeCountDesc(String keyword) {
+        return videoCategoriesRepository.findByNameContainingOrderByVideoRecipeCountDesc(keyword)
+                .stream()
+                .map(videoCategoriesDTOConverter::convertVideoCategoriesEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
 }
