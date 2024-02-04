@@ -1,6 +1,7 @@
 package com.example.mychef.dto.responseDTO;
 
 
+import jakarta.persistence.Column;
 import lombok.Data;
 
 
@@ -12,6 +13,8 @@ public class ImageRecipeResponseDTO {
     private String title;
     private String picture;
     private String component;
+    @Column(name = "preparation_method")
     private String preparationMethod;
-    private int category_id;
+    @Column(name = "category_id")
+    private int categoryId;
 }

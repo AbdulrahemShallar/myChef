@@ -15,6 +15,6 @@ public class VideoUserRatingsResponseDTO {
     private int recipeID;
     private String comment;
     private int rate;
-    @Column(name = "data_time")
-    private Instant dataTime;
+    @Column(name = "date_time")
+    private Instant dateTime;
 }

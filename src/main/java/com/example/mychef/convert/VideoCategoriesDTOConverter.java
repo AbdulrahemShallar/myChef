@@ -6,6 +6,9 @@ import com.example.mychef.model.VideoCategoriesEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class VideoCategoriesDTOConverter {
 
@@ -21,6 +24,18 @@ public class VideoCategoriesDTOConverter {
 
     public VideoCategoriesEntity convertVideoCategoriesDTOToEntity(VideoCategoriesResponseDTO videoCategoriesResponseDTO){
         return  modelMapper.map(videoCategoriesResponseDTO,VideoCategoriesEntity.class);
+    }
+
+    public List<VideoCategoriesRequestDTO> convertVideoCategoriesEntityToDTO(List<VideoCategoriesEntity> list){
+       return  list.stream()
+               .map(entity -> modelMapper.map(entity, VideoCategoriesRequestDTO.class))
+               .collect(Collectors.toList());
+    }
+
+    public List<VideoCategoriesEntity> convertVideoCategoriesDTOToEntity(List<VideoCategoriesResponseDTO> list) {
+        return list.stream()
+                .map(dto -> modelMapper.map(dto, VideoCategoriesEntity.class))
+                .collect(Collectors.toList());
     }
 
 }

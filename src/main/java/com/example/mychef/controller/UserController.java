@@ -1,6 +1,7 @@
 package com.example.mychef.controller;
 
 
+import com.example.mychef.convert.UserDTOConverter;
 import com.example.mychef.dto.requestDTO.UserRequestDTO;
 import com.example.mychef.dto.responseDTO.UserResponseDTO;
 import com.example.mychef.model.UserEntity;
@@ -18,91 +19,95 @@ public class UserController {
     final
     UserService userService;
 
-    public UserController(UserService userService) {
+    final
+    UserDTOConverter userDTOConverter;
+
+    public UserController(UserService userService, UserDTOConverter userDTOConverter) {
         this.userService = userService;
+        this.userDTOConverter = userDTOConverter;
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public UserEntity addUser(@RequestBody UserResponseDTO user){
-        return userService.newUser(user);
+        return userService.newUser(userDTOConverter.convertUserDTOToEntity(user));
      }
 
-    @PutMapping(path = "/id",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public UserEntity updateUserInfo(@RequestBody UserResponseDTO userUpdate,@RequestParam("id") Integer id){
-        return userService.updateUser(userUpdate,id);
+        return userService.updateUser(userDTOConverter.convertUserDTOToEntity(userUpdate),id);
     }
 
     @GetMapping(path = "/id")
     public UserRequestDTO getUserById(@RequestParam("id") Integer id) {
-        return userService.getUserById(id);
+        return userDTOConverter.convertUserEntityToDTO(userService.getUserById(id));
     }
     @GetMapping(path = "/all")
     public List<UserRequestDTO> getAllUsers(){
-        return userService.getAllUser();
+        return userDTOConverter.convertUserEntityToDTO(userService.getAllUser());
     }
 
     @GetMapping("/byEmail")
     public UserRequestDTO getUserByEmail(@RequestParam("email") String email) {
-        return userService.getUserByEmail(email);
+        return userDTOConverter.convertUserEntityToDTO(userService.getUserByEmail(email));
     }
 
     @GetMapping("/byNameContaining")
     public List<UserRequestDTO> getUsersByNameContaining(@RequestParam("keyword") String keyword) {
-        return userService.getUsersByNameContaining(keyword);
+        return userDTOConverter.convertUserEntityToDTO(userService.getUsersByNameContaining(keyword));
     }
 
     @GetMapping("/byEmailContaining")
     public List<UserRequestDTO> getUsersByEmailContaining(@RequestParam("keyword") String keyword) {
-        return userService.getUsersByEmailContaining(keyword);
+        return userDTOConverter.convertUserEntityToDTO(userService.getUsersByEmailContaining(keyword));
     }
 
     @GetMapping("/byPicture")
     public List<UserRequestDTO> getUsersByPicture(@RequestParam("pictureUrl") String pictureUrl) {
-        return userService.getUsersByPicture(pictureUrl);
+        return userDTOConverter.convertUserEntityToDTO(userService.getUsersByPicture(pictureUrl));
     }
 
     @GetMapping("/byEmailAndPassword")
     public List<UserRequestDTO> getUsersByEmailAndPassword(@RequestParam("email") String email, @RequestParam("password") String password) {
-        return userService.getUsersByEmailAndPassword(email, password);
+        return userDTOConverter.convertUserEntityToDTO(userService.getUsersByEmailAndPassword(email, password));
     }
 
     @GetMapping("/withImageHistory")
     public List<UserRequestDTO> getUsersWithImageHistory() {
-        return userService.getUsersWithImageHistory();
+        return userDTOConverter.convertUserEntityToDTO(userService.getUsersWithImageHistory());
     }
 
     @GetMapping("/withImageRatings")
     public List<UserRequestDTO> getUsersWithImageRatings() {
-        return userService.getUsersWithImageRatings();
+        return userDTOConverter.convertUserEntityToDTO(userService.getUsersWithImageRatings());
     }
 
     @GetMapping("/withVideoHistory")
     public List<UserRequestDTO> getUsersWithVideoHistory() {
-        return userService.getUsersWithVideoHistory();
+        return userDTOConverter.convertUserEntityToDTO(userService.getUsersWithVideoHistory());
     }
 
     @GetMapping("/withVideoRatings")
     public List<UserRequestDTO> getUsersWithVideoRatings() {
-        return userService.getUsersWithVideoRatings();
+        return userDTOConverter.convertUserEntityToDTO(userService.getUsersWithVideoRatings());
     }
 
     @GetMapping("/withImageHistoryGreaterThan")
     public List<UserRequestDTO> getUsersWithImageHistoryGreaterThan(@RequestParam("minHistorySize") int minHistorySize) {
-        return userService.getUsersWithImageHistoryGreaterThan(minHistorySize);
+        return userDTOConverter.convertUserEntityToDTO(userService.getUsersWithImageHistoryGreaterThan(minHistorySize));
     }
 
     @GetMapping("/withImageRatingsGreaterThan")
     public List<UserRequestDTO> getUsersWithImageRatingsGreaterThan(@RequestParam("minRatingsSize") int minRatingsSize) {
-        return userService.getUsersWithImageRatingsGreaterThan(minRatingsSize);
+        return userDTOConverter.convertUserEntityToDTO(userService.getUsersWithImageRatingsGreaterThan(minRatingsSize));
     }
 
     @GetMapping("/withVideoHistoryGreaterThan")
     public List<UserRequestDTO> getUsersWithVideoHistoryGreaterThan(@RequestParam("minHistorySize") int minHistorySize) {
-        return userService.getUsersWithVideoHistoryGreaterThan(minHistorySize);
+        return userDTOConverter.convertUserEntityToDTO(userService.getUsersWithVideoHistoryGreaterThan(minHistorySize));
     }
 
     @GetMapping("/withVideoRatingsGreaterThan")
     public List<UserRequestDTO> getUsersWithVideoRatingsGreaterThan(@RequestParam("minRatingsSize") int minRatingsSize) {
-        return userService.getUsersWithVideoRatingsGreaterThan(minRatingsSize);
+        return userDTOConverter.convertUserEntityToDTO(userService.getUsersWithVideoRatingsGreaterThan(minRatingsSize));
     }
 }

@@ -16,8 +16,8 @@ public class VideoRecipeResponseDTO {
     private String preparationMethod;
     private String link;
     @Column(name = "category_id")
-    private int CategoryID;
+    private int categoryId;
     @Column(name = "chef_id")
-    private int chefID;
+    private int chefId;
 
 }

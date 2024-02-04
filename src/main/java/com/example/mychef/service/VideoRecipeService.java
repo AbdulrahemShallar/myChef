@@ -1,71 +1,46 @@
 package com.example.mychef.service;
 
 
-import com.example.mychef.convert.VideoRecipeDTOConverter;
-import com.example.mychef.dto.requestDTO.VideoRecipeRequestDTO;
-import com.example.mychef.dto.responseDTO.VideoRecipeResponseDTO;
 import com.example.mychef.model.*;
 import com.example.mychef.repository.VideoRecipeRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class VideoRecipeService {
 
-    final
-    VideoRecipeDTOConverter videoRecipeDTOConverter;
+
 
     final
     VideoRecipeRepository videoRecipeRepository;
 
-    public VideoRecipeService(VideoRecipeDTOConverter videoRecipeDTOConverter, VideoRecipeRepository videoRecipeRepository) {
-        this.videoRecipeDTOConverter = videoRecipeDTOConverter;
+    public VideoRecipeService(VideoRecipeRepository videoRecipeRepository) {
         this.videoRecipeRepository = videoRecipeRepository;
     }
 
-    public VideoRecipeEntity newRecipe(VideoRecipeResponseDTO recipeDTO) {
-        VideoRecipeEntity videoRecipeEntity = videoRecipeDTOConverter.convertVideoRecipeDTOToEntity(recipeDTO);
-
-        if(recipeDTO.getCategoryID() > 0)
-            videoRecipeEntity.setCategory(getCategory(recipeDTO));
-
-        if(recipeDTO.getChefID() > 0)
-            videoRecipeEntity.setChef(getChef(recipeDTO));
-
-        return videoRecipeRepository.save(videoRecipeEntity);
+    public VideoRecipeEntity newRecipe(VideoRecipeEntity entity) {
+        return videoRecipeRepository.save(entity);
     }
 
-    public VideoRecipeEntity updateRecipe(VideoRecipeResponseDTO videoRecipeResponseDTO, Integer id) {
+    public VideoRecipeEntity updateRecipe(VideoRecipeEntity entity, Integer id) {
         VideoRecipeEntity foundRecipe = videoRecipeRepository.findVideoRecipeEntityById(id);
         if (foundRecipe != null) {
-            foundRecipe.setTitle(videoRecipeResponseDTO.getTitle());
-            foundRecipe.setPicture(videoRecipeResponseDTO.getPicture());
-            foundRecipe.setComponent(videoRecipeResponseDTO.getComponent());
-            foundRecipe.setPreparationMethod(videoRecipeResponseDTO.getPreparationMethod());
+            foundRecipe.setTitle(entity.getTitle());
+            foundRecipe.setPicture(entity.getPicture());
+            foundRecipe.setComponent(entity.getComponent());
+            foundRecipe.setPreparationMethod(entity.getPreparationMethod());
 
-            if(videoRecipeResponseDTO.getCategoryID() > 0)
-                foundRecipe.setCategory(getCategory(videoRecipeResponseDTO));
+            if(entity.getCategory() != null)
+                foundRecipe.setCategory(entity.getCategory());
 
-            if(videoRecipeResponseDTO.getChefID() > 0)
-                foundRecipe.setChef(getChef(videoRecipeResponseDTO));
+            if(entity.getChef() != null)
+                foundRecipe.setChef(entity.getChef());
 
             return videoRecipeRepository.save(foundRecipe);
         }
         return null;
-    }
-
-    private ChefEntity getChef(VideoRecipeResponseDTO recipeResponseDTO){
-        ChefEntity chef = new ChefEntity();
-        chef.setId(recipeResponseDTO.getChefID());
-        return  chef;
-    }
-    private VideoCategoriesEntity getCategory(VideoRecipeResponseDTO recipeResponseDTO){
-        VideoCategoriesEntity category = new VideoCategoriesEntity();
-        category.setId(recipeResponseDTO.getCategoryID());
-        return  category;
     }
     public VideoRecipeEntity updateRecipeLikes(Integer id)
     {   VideoRecipeEntity foundRecipe = videoRecipeRepository.findVideoRecipeEntityById(id);
@@ -75,191 +50,112 @@ public class VideoRecipeService {
         }
         return null;
     }
-    public List<VideoRecipeRequestDTO> getAllRecipe(){
-        return videoRecipeRepository.findAll()
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+
+    public List<VideoRecipeEntity> getAllRecipe(){
+        return videoRecipeRepository.findAll();
     }
 
-    public VideoRecipeRequestDTO getVideoRecipeById(int id){
-        VideoRecipeEntity videoRecipeEntity = videoRecipeRepository.findVideoRecipeEntityById(id);
-        // Check if the entity exists
-        if (videoRecipeEntity == null) {
-            // Handle the case where the entity with the provided id is not found
-            // You might throw an exception or return null based on your requirements
-            return null;
-        }
-        return videoRecipeDTOConverter.convertVideoRecipeEntityToDTO(videoRecipeEntity);
+
+    public VideoRecipeEntity getVideoRecipeById(int id){
+        return videoRecipeRepository.findVideoRecipeEntityById(id);
     }
-    public List<VideoRecipeRequestDTO> getRecipesWithTitleContaining(String keyword) {
-        return videoRecipeRepository.findByTitleContaining(keyword)
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+    public List<VideoRecipeEntity> getRecipesWithTitleContaining(String keyword) {
+        return videoRecipeRepository.findByTitleContaining(keyword);
     }
 
-    public List<VideoRecipeRequestDTO> getRecipesByCategory(VideoCategoriesEntity category) {
-        return videoRecipeRepository.findByCategory(category)
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+
+    public List<VideoRecipeEntity> getRecipesByCategory(VideoCategoriesEntity category) {
+        return videoRecipeRepository.findByCategory(category);
     }
 
-    public List<VideoRecipeRequestDTO> getRecipesByTotalRateGreaterThan(int rate) {
-        return videoRecipeRepository.findByTotalRateGreaterThan(rate)
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+    public List<VideoRecipeEntity> getRecipesByTotalRateGreaterThan(int rate) {
+        return videoRecipeRepository.findByTotalRateGreaterThan(rate);
     }
 
-    public List<VideoRecipeRequestDTO> getRecipesByLikesGreaterThan(int likes) {
-        return videoRecipeRepository.findByLikesGreaterThan(likes)
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+    public List<VideoRecipeEntity> getRecipesByLikesGreaterThan(int likes) {
+        return videoRecipeRepository.findByLikesGreaterThan(likes);
     }
 
-    public List<VideoRecipeRequestDTO> getRecipesByDateAfter(LocalDate date) {
-        return videoRecipeRepository.findByDateAfter(date)
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+    public List<VideoRecipeEntity> getRecipesByDateAfter(LocalDate date) {
+        return videoRecipeRepository.findByDateAfter(date);
     }
 
-    public List<VideoRecipeRequestDTO> getRecipesOrderByTotalRateDesc() {
-        return videoRecipeRepository.findByOrderByTotalRateDesc()
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+    public List<VideoRecipeEntity> getRecipesOrderByTotalRateDesc() {
+        return videoRecipeRepository.findByOrderByTotalRateDesc();
     }
 
-    public List<VideoRecipeRequestDTO> getMostLikedRecipe() {
-        return videoRecipeRepository.findMostLikedRecipe()
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+    public List<VideoRecipeEntity> getMostLikedRecipe() {
+        return videoRecipeRepository.findMostLikedRecipe();
     }
 
-    public List<VideoRecipeRequestDTO> getRecipesByMinRatings(int minRatings) {
-        return videoRecipeRepository.findByMinRatings(minRatings)
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+    public List<VideoRecipeEntity> getRecipesByMinRatings(int minRatings) {
+        return videoRecipeRepository.findByMinRatings(minRatings);
     }
 
-    public List<VideoRecipeRequestDTO> getRecipesByTotalRateBetween(int minRate, int maxRate) {
-        return videoRecipeRepository.findByTotalRateBetween(minRate, maxRate)
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+    public List<VideoRecipeEntity> getRecipesByTotalRateBetween(int minRate, int maxRate) {
+        return videoRecipeRepository.findByTotalRateBetween(minRate, maxRate);
     }
 
-    public List<VideoRecipeRequestDTO> getRecipesByDateBetween(LocalDate startDate, LocalDate endDate) {
-        return videoRecipeRepository.findByDateBetween(startDate, endDate)
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+    public List<VideoRecipeEntity> getRecipesByDateBetween(LocalDate startDate, LocalDate endDate) {
+        return videoRecipeRepository.findByDateBetween(startDate, endDate);
     }
 
-    public List<VideoRecipeRequestDTO> getLeastLikedRecipe() {
-        return videoRecipeRepository.findLeastLikedRecipe()
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+    public List<VideoRecipeEntity> getLeastLikedRecipe() {
+        return videoRecipeRepository.findLeastLikedRecipe();
     }
 
-    public List<VideoRecipeRequestDTO> getRecipesWithTitleContainingIgnoreCase(String keyword) {
-        return videoRecipeRepository.findByTitleContainingIgnoreCase(keyword)
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+    public List<VideoRecipeEntity> getRecipesWithTitleContainingIgnoreCase(String keyword) {
+        return videoRecipeRepository.findByTitleContainingIgnoreCase(keyword);
     }
 
-    public List<VideoRecipeRequestDTO> getTopRatedRecipe() {
-        return videoRecipeRepository.findTopRatedRecipe()
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+    public List<VideoRecipeEntity> getTopRatedRecipe() {
+        return videoRecipeRepository.findTopRatedRecipe();
     }
 
-    public List<VideoRecipeRequestDTO> getRecipesCreatedToday() {
-        return videoRecipeRepository.findRecipesCreatedToday()
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+    public List<VideoRecipeEntity> getRecipesCreatedToday() {
+        return videoRecipeRepository.findRecipesCreatedToday();
     }
 
-    public List<VideoRecipeRequestDTO> getRecipesWithNoLikes() {
-        return videoRecipeRepository.findRecipesWithNoLikes()
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+    public List<VideoRecipeEntity> getRecipesWithNoLikes() {
+        return videoRecipeRepository.findRecipesWithNoLikes();
     }
 
-    public List<VideoRecipeRequestDTO> getLatestRecipe() {
-        return videoRecipeRepository.findLatestRecipe()
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
-    }
-    ///********************************************
-
-    public List<VideoRecipeRequestDTO> getRecipesByChef(ChefEntity chef) {
-        return videoRecipeRepository.findByChef(chef)
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+    public List<VideoRecipeEntity> getLatestRecipe() {
+        return videoRecipeRepository.findLatestRecipe();
     }
 
-    public List<VideoRecipeRequestDTO> getRecipesByLink(String link) {
-        return videoRecipeRepository.findByLink(link)
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+
+    public List<VideoRecipeEntity> getRecipesByChef(ChefEntity chef) {
+        return videoRecipeRepository.findByChef(chef);
     }
 
-    public List<VideoRecipeRequestDTO> getRecipesByCategoryAndTotalRateBetween(
+    public List<VideoRecipeEntity> getRecipesByLink(String link) {
+        return videoRecipeRepository.findByLink(link);
+    }
+
+    public List<VideoRecipeEntity> getRecipesByCategoryAndTotalRateBetween(
             VideoCategoriesEntity category, int minRate, int maxRate) {
-        return videoRecipeRepository.findByCategoryAndTotalRateBetween(category, minRate, maxRate)
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+        return videoRecipeRepository.findByCategoryAndTotalRateBetween(category, minRate, maxRate);
     }
 
-    public List<VideoRecipeRequestDTO> getLatestRecipeByChef() {
-        return videoRecipeRepository.findLatestRecipeByChef()
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+    public List<VideoRecipeEntity> getLatestRecipeByChef() {
+        return videoRecipeRepository.findLatestRecipeByChef();
     }
 
-    public List<VideoRecipeRequestDTO> getOldestRecipeByChef() {
-        return videoRecipeRepository.findOldestRecipeByChef()
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+    public List<VideoRecipeEntity> getOldestRecipeByChef() {
+        return videoRecipeRepository.findOldestRecipeByChef();
     }
 
-    public List<VideoRecipeRequestDTO> getLowestRatedRecipe() {
-        return videoRecipeRepository.findLowestRatedRecipe()
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+    public List<VideoRecipeEntity> getLowestRatedRecipe() {
+        return videoRecipeRepository.findLowestRatedRecipe();
     }
 
-    public List<VideoRecipeRequestDTO> getHighestRatedRecipe() {
-        return videoRecipeRepository.findHighestRatedRecipe()
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+    public List<VideoRecipeEntity> getHighestRatedRecipe() {
+        return videoRecipeRepository.findHighestRatedRecipe();
     }
 
-    public List<VideoRecipeRequestDTO> getUnratedRecipes() {
-        return videoRecipeRepository.findUnratedRecipes()
-                .stream()
-                .map(videoRecipeDTOConverter::convertVideoRecipeEntityToDTO)
-                .collect(Collectors.toList());
+    public List<VideoRecipeEntity> getUnratedRecipes() {
+        return videoRecipeRepository.findUnratedRecipes();
     }
 
     //******* I still need for total rate update i think i should get average for userRating Service

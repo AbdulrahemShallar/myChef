@@ -1,134 +1,90 @@
 package com.example.mychef.service;
 
 
-import com.example.mychef.convert.ImageUserRatingsDTOConverter;
-import com.example.mychef.dto.requestDTO.ImageUserRatingsRequestDTO;
-import com.example.mychef.dto.responseDTO.ImageUserRatingsResponseDTO;
 import com.example.mychef.model.ImageUserRatingsEntity;
 import com.example.mychef.repository.ImageUserRatingsRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ImageUserRatingsService {
-    final ImageUserRatingsDTOConverter imageUserRatingsDTOConverter;
+    
     final
     ImageUserRatingsRepository imageUserRatingsRepository;
 
-    public ImageUserRatingsService(ImageUserRatingsDTOConverter imageUserRatingsDTOConverter, ImageUserRatingsRepository imageUserRatingsRepository) {
-        this.imageUserRatingsDTOConverter = imageUserRatingsDTOConverter;
+    public ImageUserRatingsService(ImageUserRatingsRepository imageUserRatingsRepository) {
         this.imageUserRatingsRepository = imageUserRatingsRepository;
     }
 
-    public ImageUserRatingsEntity newUserRatings(ImageUserRatingsResponseDTO imageUserRatings){
-        return imageUserRatingsRepository.save(imageUserRatingsDTOConverter.convertImageUserRatingsDTOToEntity(imageUserRatings));
+    public ImageUserRatingsEntity newUserRatings(ImageUserRatingsEntity imageUserRatings){
+        return imageUserRatingsRepository.save(imageUserRatings);
     }
 
     // I Should work here by found one element by to Integer Id ???????
-//    public ImageUserRatingsEntity updateUserRatings(ImageUserRatingsResponseDTO imageUserRatings,Integer id){
+//    public ImageUserRatingsEntity updateUserRatings(ImageUserRatingsEntity imageUserRatings,Integer id){
 //        ImageUserRatingsEntity foundEntity = imageUserRatingsRepository.
 //    }
 
-    public List<ImageUserRatingsRequestDTO> getUserRatingsByUserId(Integer userId){
-
-        List<ImageUserRatingsEntity> entityList = imageUserRatingsRepository.findByUser(userId);
-        if(entityList != null){
-            return entityList.stream()
-                    .map(imageUserRatingsDTOConverter::convertImageUserRatingsEntityToDTO)
-                    .collect(Collectors.toList());
-        }
-        return null;
+    public List<ImageUserRatingsEntity> getUserRatingsByUserId(Integer userId){
+        return imageUserRatingsRepository.findByUser(userId);
     }
-    public List<ImageUserRatingsRequestDTO> getUserRatingsByRecipeId(Integer recipeId){
-        List<ImageUserRatingsEntity> entityList = imageUserRatingsRepository.findByRecipe(recipeId);
-        if(entityList != null){
-
-            return entityList.stream()
-                    .map(imageUserRatingsDTOConverter::convertImageUserRatingsEntityToDTO)
-                    .collect(Collectors.toList());
-        }
-        return null;
+    public List<ImageUserRatingsEntity> getUserRatingsByRecipeId(Integer recipeId){
+        return imageUserRatingsRepository.findByRecipe(recipeId);
     }
 
-    public ImageUserRatingsRequestDTO getUserRatingsById(Integer userId,Integer recipeId){
-
-        ImageUserRatingsEntity entity = imageUserRatingsRepository.findByUserAndRecipe(userId,recipeId);
-        if(entity != null){
-            return imageUserRatingsDTOConverter.convertImageUserRatingsEntityToDTO(entity);
-        }
-        return null;
+    public ImageUserRatingsEntity getUserRatingsById(Integer userId,Integer recipeId){
+        return imageUserRatingsRepository.findByUserAndRecipe(userId,recipeId);
     }
 
 
-    public List<ImageUserRatingsRequestDTO> getAllUserUserRatings(){
-        return imageUserRatingsRepository.findAll()
-                .stream()
-                .map(imageUserRatingsDTOConverter::convertImageUserRatingsEntityToDTO)
-                .collect(Collectors.toList());
+    public List<ImageUserRatingsEntity> getAllUserUserRatings(){
+        return imageUserRatingsRepository.findAll();
+                
     }
 
-    public List<ImageUserRatingsRequestDTO> getUserRatingsByRate(int rate) {
-        return imageUserRatingsRepository.findByRate(rate)
-                .stream()
-                .map(imageUserRatingsDTOConverter::convertImageUserRatingsEntityToDTO)
-                .collect(Collectors.toList());
+    public List<ImageUserRatingsEntity> getUserRatingsByRate(int rate) {
+        return imageUserRatingsRepository.findByRate(rate);
+                
     }
 
-    public List<ImageUserRatingsRequestDTO> getUserRatingsByRateBetween(int minRate, int maxRate) {
-        return imageUserRatingsRepository.findByRateBetween(minRate, maxRate)
-                .stream()
-                .map(imageUserRatingsDTOConverter::convertImageUserRatingsEntityToDTO)
-                .collect(Collectors.toList());
+    public List<ImageUserRatingsEntity> getUserRatingsByRateBetween(int minRate, int maxRate) {
+        return imageUserRatingsRepository.findByRateBetween(minRate, maxRate);
+                
     }
 
-    public List<ImageUserRatingsRequestDTO> getUserRatingsByDateRange(Instant startDate, Instant endDate) {
-        return imageUserRatingsRepository.findByDateRange(startDate, endDate)
-                .stream()
-                .map(imageUserRatingsDTOConverter::convertImageUserRatingsEntityToDTO)
-                .collect(Collectors.toList());
+    public List<ImageUserRatingsEntity> getUserRatingsByDateRange(Instant startDate, Instant endDate) {
+        return imageUserRatingsRepository.findByDateRange(startDate, endDate);
+                
     }
 
-    public List<ImageUserRatingsRequestDTO> getRatingsWithComments() {
-        return imageUserRatingsRepository.findRatingsWithComments()
-                .stream()
-                .map(imageUserRatingsDTOConverter::convertImageUserRatingsEntityToDTO)
-                .collect(Collectors.toList());
+    public List<ImageUserRatingsEntity> getRatingsWithComments() {
+        return imageUserRatingsRepository.findRatingsWithComments();
+                
     }
 
-    public List<ImageUserRatingsRequestDTO> getRatingsWithoutComments() {
-        return imageUserRatingsRepository.findRatingsWithoutComments()
-                .stream()
-                .map(imageUserRatingsDTOConverter::convertImageUserRatingsEntityToDTO)
-                .collect(Collectors.toList());
+    public List<ImageUserRatingsEntity> getRatingsWithoutComments() {
+        return imageUserRatingsRepository.findRatingsWithoutComments();
+                
     }
 
-    public List<ImageUserRatingsRequestDTO> getUserRatingsByUserAndRate(int userId, int rate) {
-        return imageUserRatingsRepository.findByUserAndRate(userId, rate)
-                .stream()
-                .map(imageUserRatingsDTOConverter::convertImageUserRatingsEntityToDTO)
-                .collect(Collectors.toList());
+    public List<ImageUserRatingsEntity> getUserRatingsByUserAndRate(int userId, int rate) {
+        return imageUserRatingsRepository.findByUserAndRate(userId, rate);
+                
     }
-    public List<ImageUserRatingsRequestDTO> getUserRatingsByRecipeAndRate(int recipeId, int rate) {
-        return imageUserRatingsRepository.findByRecipeAndRate(recipeId, rate)
-                .stream()
-                .map(imageUserRatingsDTOConverter::convertImageUserRatingsEntityToDTO)
-                .collect(Collectors.toList());
+    public List<ImageUserRatingsEntity> getUserRatingsByRecipeAndRate(int recipeId, int rate) {
+        return imageUserRatingsRepository.findByRecipeAndRate(recipeId, rate);
+                
     }
 
-    public List<ImageUserRatingsRequestDTO> getMaxRatedRatings() {
-        return imageUserRatingsRepository.findMaxRatedRatings()
-                .stream()
-                .map(imageUserRatingsDTOConverter::convertImageUserRatingsEntityToDTO)
-                .collect(Collectors.toList());
+    public List<ImageUserRatingsEntity> getMaxRatedRatings() {
+        return imageUserRatingsRepository.findMaxRatedRatings();
+                
     }
 
-    public List<ImageUserRatingsRequestDTO> getMinRatedRatings() {
-        return imageUserRatingsRepository.findMinRatedRatings()
-                .stream()
-                .map(imageUserRatingsDTOConverter::convertImageUserRatingsEntityToDTO)
-                .collect(Collectors.toList());
+    public List<ImageUserRatingsEntity> getMinRatedRatings() {
+        return imageUserRatingsRepository.findMinRatedRatings();
+                
     }
 }

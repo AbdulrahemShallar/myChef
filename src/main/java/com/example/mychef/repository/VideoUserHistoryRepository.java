@@ -13,37 +13,41 @@ import java.util.List;
 @Repository
 public interface VideoUserHistoryRepository extends JpaRepository<VideoUserHistoryEntity, VideoUserHistoryEntity> {
 
-    @Query(value = "SELECT * FROM video_user_history WHERE user_id = (" +
-            "SELECT id from app_user WHERE id = :userId) AND recipe_id = (" +
-            "SELECT id from video_recipe WHERE id = :recipeId)", nativeQuery = true)
+    @Query(value = "SELECT v FROM video_user_history v WHERE v.user.id = (" +
+            "SELECT u.id from app_user u WHERE u.id = :userId) AND v.recipe.id = (" +
+            "SELECT r.id from video_recipe r WHERE r.id = :recipeId)")
     VideoUserHistoryEntity findByUserAndRecipe(@Param("userId") int userId, @Param("recipeId") int recipeId);
 
-    @Query(value = "SELECT * FROM video_user_history WHERE user_id = (" +
-            "SELECT id from app_user WHERE id = :userId)", nativeQuery = true)
+    @Query(value = "SELECT v FROM video_user_history v WHERE v.user.id = (" +
+            "SELECT u.id from app_user u WHERE u.id = :userId)")
     List<VideoUserHistoryEntity> findByUser(@Param("userId") int userId);
 
-    @Query(value = "SELECT * FROM video_user_history WHERE recipe_id = (" +
-            "SELECT id from video_recipe WHERE id = :recipeId)", nativeQuery = true)
+    @Query(value = "SELECT v FROM video_user_history v WHERE v.recipe.id = (" +
+            "SELECT r.id from video_recipe r WHERE r.id = :recipeId)")
     List<VideoUserHistoryEntity> findByRecipe(@Param("recipeId") int recipeId);
 
-    @Query(value = "SELECT * FROM video_user_history WHERE user_id = :userId AND date_time >= :startDate AND date_time <= :endDate", nativeQuery = true)
+    @Query(value = "SELECT v FROM video_user_history v WHERE v.user.id = :userId " +
+            "AND v.dateTime >= :startDate AND v.dateTime <= :endDate")
     List<VideoUserHistoryEntity> findByUserAndDateRange(@Param("userId") int userId, @Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
-    @Query(value = "SELECT * FROM video_user_history WHERE recipe_id = :recipeId AND date_time >= :startDate AND date_time <= :endDate", nativeQuery = true)
+    @Query(value = "SELECT v FROM video_user_history v WHERE v.recipe.id = :recipeId " +
+            "AND v.dateTime >= :startDate AND v.dateTime <= :endDate")
     List<VideoUserHistoryEntity> findByRecipeAndDateRange(@Param("recipeId") int recipeId, @Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
-    @Query(value = "SELECT * FROM video_user_history WHERE date_time >= :startDate AND date_time <= :endDate", nativeQuery = true)
+    @Query(value = "SELECT v FROM video_user_history v WHERE v.dateTime >= :startDate AND v.dateTime <= :endDate")
     List<VideoUserHistoryEntity> findByDateRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
-    @Query(value = "SELECT * FROM video_user_history ORDER BY date_time DESC LIMIT :limit", nativeQuery = true)
-    List<VideoUserHistoryEntity> findLatestRecords(@Param("limit") int limit);
+    @Query(value = "SELECT v FROM video_user_history v ORDER BY v.dateTime DESC")
+    List<VideoUserHistoryEntity> findLatestRecords();
 
-    @Query(value = "SELECT * FROM video_user_history WHERE user_id = :userId AND recipe_id = :recipeId AND date_time <= CURRENT_DATE ORDER BY date_time DESC LIMIT 1", nativeQuery = true)
+    @Query(value = "SELECT v FROM video_user_history v WHERE v.user.id = :userId " +
+            "AND v.recipe.id = :recipeId AND v.dateTime <= CURRENT_DATE ORDER BY v.dateTime DESC LIMIT 1")
     VideoUserHistoryEntity findLatestHistoryForUserAndRecipe(@Param("userId") int userId, @Param("recipeId") int recipeId);
 
-    @Query(value = "SELECT * FROM video_user_history WHERE date_time <= CURRENT_DATE ORDER BY date_time DESC LIMIT :limit", nativeQuery = true)
-    List<VideoUserHistoryEntity> findLatestHistoryRecords(@Param("limit") int limit);
+    @Query(value = "SELECT v FROM video_user_history v WHERE v.dateTime <= CURRENT_DATE ORDER BY v.dateTime DESC")
+    List<VideoUserHistoryEntity> findLatestHistoryRecords();
 
-    @Query(value = "SELECT * FROM video_user_history WHERE user_id = :userId AND date_time <= CURRENT_DATE ORDER BY date_time DESC LIMIT :limit", nativeQuery = true)
-    List<VideoUserHistoryEntity> findLatestHistoryForUser(@Param("userId") int userId, @Param("limit") int limit);
+    @Query(value = "SELECT v FROM video_user_history v WHERE v.user.id = :userId AND v.dateTime <= CURRENT_DATE " +
+            "ORDER BY v.dateTime DESC")
+    List<VideoUserHistoryEntity> findLatestHistoryForUser(@Param("userId") int userId);
 }

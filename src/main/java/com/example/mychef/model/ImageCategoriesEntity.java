@@ -21,7 +21,7 @@ public class ImageCategoriesEntity {
     @JsonBackReference
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
-    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER,
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private Set<ImageRecipeEntity> imageRecipeEntitySet;
 }

@@ -11,43 +11,43 @@ import java.util.List;
 
 @Repository
 public interface VideoUserRatingsRepository extends JpaRepository<VideoUserRatingsEntity, VideoUserRatingsEntity> {
-    @Query(value = "SELECT * FROM video_user_ratings WHERE user_id = (" +
-            "SELECT id from app_user WHERE id = :userId) AND recipe_id = (" +
-            "SELECT id from video_recipe WHERE id = :recipeId)", nativeQuery = true)
+    @Query(value = "SELECT v FROM video_user_ratings v WHERE v.user.id = (" +
+            "SELECT u.id from app_user u WHERE u.id = :userId) AND v.recipe.id = (" +
+            "SELECT r.id from video_recipe r WHERE r.id = :recipeId)")
     VideoUserRatingsEntity findByUserAndRecipe(@Param("userId") int userId, @Param("recipeId") int recipeId);
 
-    @Query(value = "SELECT * FROM video_user_ratings WHERE user_id = (" +
-            "SELECT id from app_user WHERE id = :userId)", nativeQuery = true)
+    @Query(value = "SELECT v FROM video_user_ratings v WHERE v.user.id = (" +
+            "SELECT u.id from app_user u WHERE u.id = :userId)")
     List<VideoUserRatingsEntity> findByUser(@Param("userId") int userId);
 
-    @Query(value = "SELECT * FROM video_user_ratings WHERE recipe_id = (" +
-            "SELECT id from video_recipe WHERE id = :recipeId)", nativeQuery = true)
+    @Query(value = "SELECT v FROM video_user_ratings v WHERE v.recipe.id = (" +
+            "SELECT u.id from video_recipe u WHERE u.id = :recipeId)")
     List<VideoUserRatingsEntity> findByRecipe(@Param("recipeId") int recipeId);
 
-    @Query(value = "SELECT * FROM video_user_ratings WHERE rate = :rate", nativeQuery = true)
+    @Query(value = "SELECT v FROM video_user_ratings v WHERE v.rate = :rate")
     List<VideoUserRatingsEntity> findByRate(@Param("rate") int rate);
 
-    @Query(value = "SELECT * FROM video_user_ratings WHERE rate BETWEEN :minRate AND :maxRate", nativeQuery = true)
+    @Query(value = "SELECT v FROM video_user_ratings v WHERE v.rate BETWEEN :minRate AND :maxRate")
     List<VideoUserRatingsEntity> findByRateBetween(@Param("minRate") int minRate, @Param("maxRate") int maxRate);
 
-    @Query(value = "SELECT * FROM video_user_ratings WHERE data_time >= :startDate AND data_time <= :endDate", nativeQuery = true)
+    @Query(value = "SELECT v FROM video_user_ratings v WHERE v.dateTime >= :startDate AND v.dateTime <= :endDate")
     List<VideoUserRatingsEntity> findByDateRange(@Param("startDate") Instant startDate, @Param("endDate") Instant endDate);
 
-    @Query(value = "SELECT * FROM video_user_ratings WHERE comment IS NOT NULL", nativeQuery = true)
+    @Query(value = "SELECT v FROM video_user_ratings v WHERE v.comment IS NOT NULL")
     List<VideoUserRatingsEntity> findRatingsWithComments();
 
-    @Query(value = "SELECT * FROM video_user_ratings WHERE comment IS NULL", nativeQuery = true)
+    @Query(value = "SELECT v FROM video_user_ratings v WHERE v.comment IS NULL")
     List<VideoUserRatingsEntity> findRatingsWithoutComments();
 
-    @Query(value = "SELECT * FROM video_user_ratings WHERE user_id = :userId AND rate = :rate", nativeQuery = true)
+    @Query(value = "SELECT v FROM video_user_ratings v WHERE v.user.id = :userId AND v.rate = :rate")
     List<VideoUserRatingsEntity> findByUserAndRate(@Param("userId") int userId, @Param("rate") int rate);
 
-    @Query(value = "SELECT * FROM video_user_ratings WHERE recipe_id = :recipeId AND rate = :rate", nativeQuery = true)
+    @Query(value = "SELECT v FROM video_user_ratings v WHERE v.recipe.id = :recipeId AND v.rate = :rate")
     List<VideoUserRatingsEntity> findByRecipeAndRate(@Param("recipeId") int recipeId, @Param("rate") int rate);
 
-    @Query(value = "SELECT * FROM video_user_ratings WHERE rate = (SELECT MAX(rate) FROM video_user_ratings)", nativeQuery = true)
+    @Query(value = "SELECT v FROM video_user_ratings v WHERE v.rate = (SELECT MAX(r.rate) FROM video_user_ratings r)")
     List<VideoUserRatingsEntity> findMaxRatedRatings();
 
-    @Query(value = "SELECT * FROM video_user_ratings WHERE rate = (SELECT MIN(rate) FROM video_user_ratings)", nativeQuery = true)
+    @Query(value = "SELECT v FROM video_user_ratings v WHERE v.rate = (SELECT MIN(r.rate) FROM video_user_ratings r)")
     List<VideoUserRatingsEntity> findMinRatedRatings();
 }
