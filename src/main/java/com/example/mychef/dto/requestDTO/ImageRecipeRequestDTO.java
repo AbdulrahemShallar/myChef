@@ -1,6 +1,7 @@
 package com.example.mychef.dto.requestDTO;
 
 import com.example.mychef.model.ImageCategoriesEntity;
+import jakarta.persistence.Column;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -15,5 +16,6 @@ public class ImageRecipeRequestDTO {
     private int totalRate;
     private LocalDate date;
     private int likes;
+    @Column(name = "category_id")
     private ImageCategoriesEntity category;
 }

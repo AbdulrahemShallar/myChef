@@ -28,7 +28,7 @@ public class ImageRecipeEntity {
     private int likes;
 
     @JsonManagedReference
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id")
     private ImageCategoriesEntity category;
 
